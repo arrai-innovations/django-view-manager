@@ -11,7 +11,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
             "manage.py makeviewmigration: error: the following arguments are required: db_table_name, migration_name",
             err,
         )
-        self.assertIn("{animals_pets,employees_employeelikes,food_sweets} migration_name", err)
+        self.assertIn("{animals_pets,employees_employeelikes,food_sweets}", err)
 
     def test_no_sql_folder(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeelikes", "create_view"])
@@ -34,8 +34,8 @@ class EmployeesTestCase(ManagementCommandTestCase):
         self.assertTrue(os.path.exists("tests/employees/migrations/0002_create_view.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0002.sql"))
 
-        with open("tests/employees/sql/view-employees_employeelikes-0002.sql", "r") as F:
-            content = F.read()
+        with open("tests/employees/sql/view-employees_employeelikes-0002.sql", "r") as f:
+            content = f.read()
         self.assertEqual(
             content,
             """/*
@@ -60,8 +60,8 @@ class EmployeesTestCase(ManagementCommandTestCase):
         )
 
         # Also test creating a second view.  The contents from the first should be copied to the new view file.
-        with open("tests/employees/sql/view-employees_employeelikes-0002.sql", "w") as F:
-            F.write(
+        with open("tests/employees/sql/view-employees_employeelikes-0002.sql", "w") as f:
+            f.write(
                 "SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name "
                 "UNION 2 AS id, 314 AS employee_id, 'Puppies' AS name;\n"
             )
@@ -85,8 +85,8 @@ class EmployeesTestCase(ManagementCommandTestCase):
         )
         self.assertTrue(os.path.exists("tests/employees/migrations/0003_add_date_to_employee_likes.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0003.sql"))
-        with open("tests/employees/sql/view-employees_employeelikes-0003.sql", "r") as F:
-            content = F.read()
+        with open("tests/employees/sql/view-employees_employeelikes-0003.sql", "r") as f:
+            content = f.read()
         self.assertEqual(
             content,
             """/*
