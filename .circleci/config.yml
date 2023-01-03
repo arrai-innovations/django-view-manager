@@ -73,6 +73,10 @@ jobs:
                 description: "Execution environment for the test job."
                 type: executor
                 default: python311
+            django:
+                description: "Django version for the test job."
+                type: string
+                default: "django_3.2"
         executor: <<parameters.executor>>
         resource_class: small
         steps:
@@ -255,11 +259,17 @@ workflows:
             - build:
                 name: build
                 requires:
-                    - python37
-                    - python38
-                    - python39
-                    - python310
-                    - python311
+                    - python 3.7 - django 3.2
+                    - python 3.8 - django 3.2
+                    - python 3.8 - django 4.0
+                    - python 3.8 - django 4.1
+                    - python 3.9 - django 3.2
+                    - python 3.9 - django 4.0
+                    - python 3.9 - django 4.1
+                    - python 3.10 - django 3.2
+                    - python 3.10 - django 4.0
+                    - python 3.10 - django 4.1
+                    - python 3.11 - django 4.1
                 filters:
                     branches:
                         only: /.*/
