@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=65.6.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-view-manager"
+description = """\
+    A management command for django that provides a semi-automated way to have diffs of sql views.\
+    The SQL of a view is stored in a file and read into a generated migration.\
+    If you create and modify views in migrations, this management command can help automate the creation of
+    migrations that read in files containing SQL views.  New versions are created with each use of the
+    management command, so you can diff SQL files, or view diffs in your commits, providing you commit the
+    new file before making changes.
+    """
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Arrai Innovations", email = "support@arrai.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: BSD License",
+    "Environment :: Console",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "django>=3.2.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/arrai-innovations/django-view-manager/"
+
+[tool.setuptools.dynamic]
+version = {attr = "VERSION"}
+
+[tool.flake8]
+exclude = ".git"
+extend-ignore = [
+    # (flake8) Black incompatibility - see https://github.com/PyCQA/pycodestyle/issues/373
+    "E203",
+]
+max-complexity = 10
+max-line-length = 120
+# flake8-import-order
+application-import-names = [
+    'config',
+    'django_view_manager'
+]
+import-order-style = 'pycharm'
+# pep8-naming
+ignore-names = [
+    # defaults
+    'setUp',
+    'tearDown',
+    'setUpClass',
+    'tearDownClass',
+    'setUpTestData',
+    'failureException',
+    'longMessage',
+    'maxDiff',
+    # custom
+]
+
+[tool.pycodestyle]
+max-line-length = 120
+exclude = ".git"
+
+[tool.black]
+line-length = 120
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "*/tests/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+]
+
+[tool.pylint.master]
+load-plugins = ['pylint_django']
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.pylint.messages_control]
+disable = ['missing-docstring', 'invalid-name']
+
+[tool.pytest.ini_options]
+addopts = "--ds=config.settings.test"
+python_files = "utils/tests.py"
+
