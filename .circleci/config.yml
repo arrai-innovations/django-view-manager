@@ -37,7 +37,7 @@ jobs:
                     - run:
                         name: "Verify scm tag matches software version"
                         command: |
-                            DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
+                            DIST_VERSION=$(python -c 'with open("VERSION", "r") as f: print(f.readline().strip())')
                             if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
                                 echo "Git tag: ${CIRCLE_TAG} does not match the release version: ${DIST_VERSION}"
                                 exit 1
