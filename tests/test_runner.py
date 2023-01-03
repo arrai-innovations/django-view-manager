@@ -1,5 +1,5 @@
 import os
-
+import shutil
 
 # Make sure if tests are run multiple times, that we clean up sql and  migration files/folders for the deleted files.
 from django.test.runner import DiscoverRunner
@@ -40,7 +40,8 @@ def clean_up_folders():
 
     for path in folders_to_delete:
         if os.path.exists(path):
-            os.rmdir(path)
+            # Make sure we delete the folder, even if it is not empty.
+            shutil.rmtree(path)
 
 
 class TestRunner(DiscoverRunner):
