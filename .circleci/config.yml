@@ -1,0 +1,365 @@
+version: 2.1
+orbs:
+    utils: arrai/utils@1.11.0
+    flake8: arrai/flake8@16.0.0
+    pypi: arrai/pypi@2.0.1
+    github: arrai/github@2.0.1
+executors:
+    python37:
+        docker:
+            - image: cimg/python:3.7
+    python38:
+        docker:
+            - image: cimg/python:3.8
+    python39:
+        docker:
+            - image: cimg/python:3.9
+    python310:
+        docker:
+            - image: cimg/python:3.10
+    python311:
+        docker:
+            - image: cimg/python:3.11
+jobs:
+    build:
+        executor: python311
+        resource_class: small
+        steps:
+            - checkout
+            - run:
+                name: "Install build requirements"
+                command: |
+                    pip install --user --upgrade build wheel
+                    pip install --user -r dev_requirements.txt
+            - when:
+                condition: << pipeline.git.tag >>
+                steps:
+                    - run:
+                        name: "Verify scm tag matches software version"
+                        command: |
+                            DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
+                            if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
+                                echo "Git tag: ${CIRCLE_TAG} does not match the release version: ${DIST_VERSION}"
+                                exit 1
+                            fi
+            - run:
+                name: "Build Package"
+                command: python -m build --wheel
+            - save_cache:
+                paths:
+                    - ~/project/dist
+                key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+    install:
+        parameters:
+            executor:
+                description: "Execution environment for the install test job."
+                type: executor
+                default: python311
+        executor: <<parameters.executor>>
+        resource_class: small
+        steps:
+            - restore_cache:
+                keys:
+                    - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - run:
+                  name: "Install wheel"
+                  command: pip install ~/project/dist/*.whl
+            - run:
+                  name: "Import library"
+                  command: python -c 'from django_view_manager.utils.apps import UtilsConfig; from django_view_manager.utils.management.commands.makeviewmigration import Command'
+    tests:
+        parameters:
+            executor:
+                description: "Execution environment for the test job."
+                type: executor
+                default: python311
+        executor: <<parameters.executor>>
+        resource_class: small
+        steps:
+            - checkout
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/add_ssh_config:
+                        host: "docs"
+                        hostname: ${DOCS_HOST}
+                        port: ${DOCS_PORT}
+                        user: ${DOCS_USER}
+                    - utils/make_status_shield:
+                        status: running
+                        color: lightblue
+            - run:
+                name: "Install test requirements"
+                command: pip install -r test_requirements_<<parameters.django>>.txt | cat; test ${PIPESTATUS[0]} -eq 0
+            - run:
+                name: "Run tests"
+                command: coverage run --source='.' manage.py test
+            - run:
+                when: always
+                command: |
+                    coverage html
+                    coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> /tmp/.coveragep
+            - utils/rsync_folder:
+                when: always
+                folder: ./htmlcov/
+                remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
+                host: docs
+            - run:
+                name: "Create freeze file"
+                when: always
+                command: pip freeze > ~/pip.freeze
+            - utils/rsync_file:
+                when: always
+                file: ~/pip.freeze
+                remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.freeze
+                host: docs
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/make_coverage_shield:
+                        when: always
+                        link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
+                    - utils/rsync_file:
+                        when: always
+                        file: /tmp/coverage.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.coverage.svg
+                        host: docs
+                    - utils/make_status_shield:
+                        when: on_success
+                        status: passed
+                        color: brightgreen
+                    - utils/make_status_shield:
+                        when: on_fail
+                        status: failed
+                        color: red
+                    - utils/rsync_file:
+                        when: always
+                        file: ~/status.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
+                        host: docs
+workflows:
+    test_and_build:
+        jobs:
+            - tests:
+                name: python 3.7 - django 3.2
+                context: arrai-global
+                executor: python37
+                django: django_3.2
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.8 - django 3.2
+                context: arrai-global
+                executor: python38
+                django: django_3.2
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.8 - django 4.0
+                context: arrai-global
+                executor: python38
+                django: django_4.0
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.8 - django 4.1
+                context: arrai-global
+                executor: python38
+                django: django_4.1
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.9 - django 3.2
+                context: arrai-global
+                executor: python39
+                django: django_3.2
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.9 - django 4.0
+                context: arrai-global
+                executor: python39
+                django: django_4.0
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.9 - django 4.1
+                context: arrai-global
+                executor: python39
+                django: django_4.1
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.10 - django 3.2
+                context: arrai-global
+                executor: python310
+                django: django_3.2
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.10 - django 4.0
+                context: arrai-global
+                executor: python310
+                django: django_4.0
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.10 - django 4.1
+                context: arrai-global
+                executor: python310
+                django: django_4.1
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python 3.11 - django 4.1
+                context: arrai-global
+                executor: python311
+                django: django_4.1
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - build:
+                name: build
+                requires:
+                    - python37
+                    - python38
+                    - python39
+                    - python310
+                    - python311
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python37_install
+                executor: python37
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python38_install
+                executor: python38
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python39_install
+                executor: python39
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python310_install
+                executor: python310
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python311_install
+                executor: python311
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - github/create_release:
+                name: release_on_github
+                context: arrai-global
+                requires:
+                    - python37_install
+                    - python38_install
+                    - python39_install
+                    - python310_install
+                    - python311_install
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
+            - pypi/upload_release:
+                name: publish
+                context: arrai-public-package-publishing
+                requires:
+                    - python37_install
+                    - python38_install
+                    - python39_install
+                    - python310_install
+                    - python311_install
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
+    lint:
+        jobs:
+            - flake8/flake8:
+                name: flake8
+                flake8_cmd: pflake8
+                context: arrai-global
+                wd: ~/project
+                filters:
+                    branches:
+                        only:
+                            - main
+            - flake8/flake8:
+                name: flake8-no-badge
+                flake8_cmd: pflake8
+                create_badges: false
+                wd: ~/project
+                filters:
+                    branches:
+                        ignore:
+                            - main
