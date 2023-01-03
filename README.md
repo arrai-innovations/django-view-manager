@@ -1,22 +1,37 @@
 # django-view-manager
+
 A management command for django that provides a semi-automated way to have diffs of sql views.
 The SQL of a view is stored in a file and read into a generated migration.
 
-If you create and modify views in migrations, this management command can help automate the creation of migrations that read in files containing SQL views.  New versions are created with each use of the management command, so you can diff SQL files, or view diffs in your commits, providing you commit the new file before making changes.
+If you create and modify views in migrations, this management command can help automate the creation of migrations that read in files containing SQL views. New versions are created with each use of the management command, so you can diff SQL files, or view diffs in your commits, providing you commit the new file before making changes.
+
+<!-- prettier-ignore-start -->
+<!--TOC-->
+
+- [django-view-manager](#django-view-manager)
+  - [Installation](#installation)
+  - [Requirements](#requirements)
+  - [Folder and File Structure](#folder-and-file-structure)
+  - [Usage](#usage)
+
+<!--TOC-->
+<!-- prettier-ignore-end -->
 
 ## Installation
 
 ```shell
 $ pip install django-view-manager
 ```
+
 or
+
 ```shell
 $ pipenv install django-view-manager
 ```
 
 ## Requirements
 
-A `Pipfile` and `dev_requirements.txt` exist.  You can choose which you want to use.
+A `Pipfile` and `dev_requirements.txt` exist. You can choose which you want to use.
 
 At least a django 3.2 and python 3.6 (due to formatted string literals - f-strings).
 
@@ -24,7 +39,7 @@ It may work in an older django, but hasn't been tested with them.
 
 ## Folder and File Structure
 
-The following folder and file structure is used by this management command.  If you were to run the commands listed under usage, you would end up with the following:
+The following folder and file structure is used by this management command. If you were to run the commands listed under usage, you would end up with the following:
 
 <style>
 folder {color: #3B78FF;}
@@ -56,6 +71,7 @@ green {color: #16C60C;}
 If you need to know how to run a django management command, please refer to the documentation in django for more details.
 
 Examples in this documentation use an `employees` app with the following model:
+
 ```python
 class EmployeeLikes(models.Model):
     employee = models.ForeignKey("employees.Employee", on_delete=models.DO_NOTHING)
@@ -118,7 +134,7 @@ Instructions will be added into the `view-employees_employeelikes-0002.sql` file
     Commit this file before you make changes to it, so you can look at the commits that follow for a diff.
     You can remove this comment before committing or after, whichever you'd prefer.
     Add the SQL for this view and then commit the changes.
-    
+
     eg.
     DROP VIEW IF EXISTS employees_employeelikes;
     CREATE VIEW
@@ -152,7 +168,7 @@ Migrations for 'employees':
 Done - You can now edit 'view-employees_employeelikes-0003.sql'.
 </pre>
 
-Instructions will be added into `view-employees_employeelikes-0003.sql`, followed by the contents from `view-employees_employeelikes-0002.sql`.  Here we assume that the example from the comment in `view-employees_employeelikes-0002.sql` became the SQL in the file before we did this command.
+Instructions will be added into `view-employees_employeelikes-0003.sql`, followed by the contents from `view-employees_employeelikes-0002.sql`. Here we assume that the example from the comment in `view-employees_employeelikes-0002.sql` became the SQL in the file before we did this command.
 
 ```sql
 /*
