@@ -81,15 +81,15 @@ jobs:
         resource_class: small
         steps:
             - checkout
+            - utils/add_ssh_config:
+                host: "docs"
+                hostname: ${DOCS_HOST}
+                port: ${DOCS_PORT}
+                user: ${DOCS_USER}
             - when:
                 condition:
                     equal: [ main, << pipeline.git.branch >> ]
                 steps:
-                    - utils/add_ssh_config:
-                        host: "docs"
-                        hostname: ${DOCS_HOST}
-                        port: ${DOCS_PORT}
-                        user: ${DOCS_USER}
                     - utils/make_status_shield:
                         status: running
                         color: lightblue
