@@ -4,36 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='EmployeeLikes',
+            name="EmployeeLikes",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=1024)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=1024)),
             ],
             options={
-                'db_table': 'employees_employeelikes',
-                'ordering': ('name',),
-                'managed': False,
-                'default_related_name': 'likes',
+                "db_table": "employees_employeelikes",
+                "ordering": ("name",),
+                "managed": False,
+                "default_related_name": "likes",
             },
         ),
         migrations.CreateModel(
-            name='Employee',
+            name="Employee",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=1024)),
-                ('last_name', models.CharField(max_length=1024)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("first_name", models.CharField(max_length=1024)),
+                ("last_name", models.CharField(max_length=1024)),
             ],
             options={
-                'ordering': ('last_name', 'first_name'),
-                'default_related_name': 'employees',
+                "ordering": ("last_name", "first_name"),
+                "default_related_name": "employees",
             },
         ),
     ]

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Sweets(models.Model):
     name = models.CharField(max_length=1024)
 
