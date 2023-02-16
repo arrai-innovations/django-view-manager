@@ -33,7 +33,7 @@ dynamic = ["readme", "version"]
 repository = "https://github.com/arrai-innovations/django-view-manager/"
 
 [tool.setuptools]
-packages = ["django_view_manager.utiils.management.commands.makeviewmigration"]
+packages = ["django_view_manager.utiils.management.commands"]
 package-dir = {"" = "django_view_manager"}
 license-files = ['LICENSE']
 
