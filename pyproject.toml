@@ -40,6 +40,9 @@ license-files = ['LICENSE']
 readme = {file = "README.md", content_type = "text/markdown"}
 version = {file = "VERSION"}
 
+[tool.setuptools.packages.find]
+where = ["django-view-manager"]
+
 [tool.flake8]
 exclude = ".git"
 extend-ignore = [
