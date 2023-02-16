@@ -33,15 +33,13 @@ dynamic = ["readme", "version"]
 repository = "https://github.com/arrai-innovations/django-view-manager/"
 
 [tool.setuptools]
-packages = ["django_view_manager"]
+packages = ["django_view_manager.utiils.management.commands.makeviewmigration"]
+package-dir = {"" = "django_view_manager"}
 license-files = ['LICENSE']
 
 [tool.setuptools.dynamic]
 readme = {file = "README.md", content_type = "text/markdown"}
 version = {file = "VERSION"}
-
-[tool.setuptools.packages.find]
-where = ["django-view-manager"]
 
 [tool.flake8]
 exclude = ".git"
