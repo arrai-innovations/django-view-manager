@@ -1,9 +1,10 @@
 # django-view-manager
 
-A management command for django that provides a semi-automated way to have diffs of sql views.
-The SQL of a view is stored in a file and read into a generated migration.
+A management command for django, designed to provide a way in pull requests, to see a diff of the sql (`CREATE VIEW ...`) for unmanaged models.
 
-If you create and modify views in migrations, this management command can help automate the creation of migrations that read in files containing SQL views. New versions are created with each use of the management command, so you can diff SQL files, or view diffs in your commits, providing you commit the new file before making changes.
+The management command creates an `sql` folder inside an app, along with files like `view-animals_pets-latest.sql` (live) and `view-animals_pets-0002.sql` (historical), where you write your sql. Migrations are also created in the process, which read these files, so you don't need to create them yourself.
+
+Refer to folder and file structure, and usage, for more detailed information.
 
 <!-- prettier-ignore-start -->
 <!--TOC-->
@@ -13,6 +14,9 @@ If you create and modify views in migrations, this management command can help a
   - [Requirements](#requirements)
   - [Folder and File Structure](#folder-and-file-structure)
   - [Usage](#usage)
+    - [Calling the command with no arguments:](#calling-the-command-with-no-arguments)
+    - [Calling the command with arguments on a new app:](#calling-the-command-with-arguments-on-a-new-app)
+    - [Calling the command again, when changes are needed:](#calling-the-command-again-when-changes-are-needed)
 
 <!--TOC-->
 <!-- prettier-ignore-end -->
@@ -31,11 +35,11 @@ $ pipenv install django-view-manager
 
 ## Requirements
 
-A `Pipfile` and `dev_requirements.txt` exist. You can choose which you want to use.
+A `Pipfile` and `dev_requirements.txt` exist for convenience. You can choose which you want to use.
 
-At least a django 3.2 and python 3.6 (due to formatted string literals - f-strings).
+At least a django 3.2 and python 3.7.
 
-It may work in an older django, but hasn't been tested with them.
+It may work in an older django, but we only test against supported versions.
 
 ## Folder and File Structure
 
@@ -54,13 +58,13 @@ folder {color: #3B78FF;}
             0003_add_date_to_employee_likes.py
         <folder>sql</folder>
             view-employees_employeelikes-0002.sql
-            view-employees_employeelikes-0003.sql
+            view-employees_employeelikes-latest.sql
         __init__.py
         apps.py
         models.py
 </pre>
 
-The numbers in the sql filenames are associated to the corresponding numbers in the migrations.
+The numbers in a filename are associated to the corresponding migration number, and are meant to be historic.
 
 ## Usage
 
@@ -70,24 +74,11 @@ green {color: #16C60C;}
 
 If you need to know how to run a django management command, please refer to the documentation in django for more details.
 
-Examples in this documentation use an `employees` app with the following model:
+Examples in this documentation use the apps in the test folder, which are also used by tests. The examples will focus on the `employees` app.
 
-```python
-class EmployeeLikes(models.Model):
-    employee = models.ForeignKey("employees.Employee", on_delete=models.DO_NOTHING)
-    name = models.CharField(max_length=1024)
+https://github.com/arrai-innovations/django-view-manager/blob/ccf70282f4ca5a45946a514fd859b8352706296a/tests/employees/models.py#L4-L27
 
-    class Meta:
-        managed = False
-        db_table = "employees_employeelikes"
-        ordering = ("-name",)
-        default_related_name = "likes"
-
-    def __str__(self):
-        return f"{self.employee} likes {self.name}."
-```
-
-Calling the command with no arguments:
+### Calling the command with no arguments:
 
 ```shell
 $ python manage.py makeviewmigration
@@ -95,15 +86,14 @@ $ python manage.py makeviewmigration
 
 The results will be:
 
-<pre>
-usage: manage.py makeviewmigration [-h] [--version] [-v {0,1,2,3}] [--settings SETTINGS] [--pythonpath PYTHONPATH] [--traceback] [--no-color] [--force-color]
+```shell
+$ python manage.py makeviewmigration [-h] [--version] [-v {0,1,2,3}] [--settings SETTINGS] [--pythonpath PYTHONPATH] [--traceback] [--no-color] [--force-color]
                                    [--skip-checks]
-                                   {employees_employeelikes}
-                                   migration_name
+                                   {animals_pets,employees_employeelikes,food_sweets} migration_name
 manage.py makeviewmigration: error: the following arguments are required: db_table_name, migration_name
-</pre>
+```
 
-Calling the command with arguments on a new app:
+### Calling the command with arguments on a new app:
 
 ```shell
 $ python manage.py makeviewmigration employees_employeelikes create_view
@@ -112,33 +102,44 @@ $ python manage.py makeviewmigration employees_employeelikes create_view
 The results will be:
 
 <pre>
+
 <green>Created 'migrations' folder in app 'employees'.</green>
-<green>Created 'sql' folder in app 'employees'.</green>
+
 Creating initial migration for app 'employees'.
 Migrations for 'employees':
   project_name/employees/migrations/0001_initial.py
-    - Create model EmployeeLikes
+    - Create model Sweets
+
+<green>Created 'sql' folder in app 'employees'.</green>
+
 Creating empty migration for the new SQL view.
 Migrations for 'employees':
   project_name/employees/migrations/0002_create_view.py
     - Raw SQL operation
-<green>Created new SQL view file - 'view-employees_employeelikes-0002.sql'.</green>
-<green>Modified migration '0002_create_view' to read from 'view-employees_employeelikes-0002.sql'.</green>
-Done - You can now edit 'view-employees_employeelikes-0002.sql'.
+
+<green>Created new SQL view file - 'view-employees_employeelikes-latest.sql'.</green>
+
+<green>Modified migration '0002_create_view' to read from 'view-employees_employeelikes-latest.sql'.</green>
+
+Done - You can now edit 'view-employees_employeelikes-latest.sql'.
+
 </pre>
 
-Instructions will be added into the `view-employees_employeelikes-0002.sql` file:
+Instructions will be added into the `view-employees_employeelikes-latest.sql` file:
 
 ```sql
 /*
-    Commit this file before you make changes to it, so you can look at the commits that follow for a diff.
-    You can remove this comment before committing or after, whichever you'd prefer.
+    This file was generated using django-view-manager 1.0.0.
     Add the SQL for this view and then commit the changes.
+    You can remove this comment before committing.
+
+    When you have changes to make to this sql, you need to run the makeviewmigration command
+    before altering the sql, so the historical sql file is created with the correct contents.
 
     eg.
-    DROP VIEW IF EXISTS employees_employeelikes;
+    DROP VIEW IF EXISTS animals_pets;
     CREATE VIEW
-        employees_employeelikes AS
+        animals_pets AS
     SELECT
         1 AS id,
         42 AS employee_id,
@@ -147,10 +148,12 @@ Instructions will be added into the `view-employees_employeelikes-0002.sql` file
         2 AS id,
         314 AS employee_id,
         'Puppies' AS name
- */
+*/
 ```
 
-Calling the command again, when changes are needed:
+### Calling the command again, when changes are needed:
+
+<b>Important:</b> Run the command before you alter the contents of your sql file, like `view-employees_employeelikes-latest.sql`. If you do not, the historical version created by the command will not contain the sql that it should,
 
 ```shell
 $ python manage.py makeviewmigration employees_employeelikes add_date_to_employee_likes
@@ -159,22 +162,32 @@ $ python manage.py makeviewmigration employees_employeelikes add_date_to_employe
 The results will be:
 
 <pre>
+
 Creating empty migration for the SQL changes.
 Migrations for 'employees':
-  project_name/employees/migrations/0003_add_date_to_employee_likes.py
+  tests/employees/migrations/0003_add_date_to_employee_likes.py
     - Raw SQL operation
-<green>Created new SQL view file - 'view-employees_employeelikes-0003.sql'.</green>
-<green>Modified migration '0003_create_view' to read from 'view-employees_employeelikes-0003.sql' and 'view-employees_employeelikes-0002.sql'.</green>
-Done - You can now edit 'view-employees_employeelikes-0003.sql'.
+
+<green>Created historical SQL view file - 'view-employees_employeelikes-0002.sql'.</green>
+
+<green>Modified migration '0002_create_view' to read from 'view-employees_employeelikes-0002.sql'.</green>
+
+<green>Modified migration '0003_add_date_to_employee_likes' to read from 'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0002.sql'.</green>
+
+Done - You can now edit 'view-employees_employeelikes-latest.sql'.
+
 </pre>
 
-Instructions will be added into `view-employees_employeelikes-0003.sql`, followed by the contents from `view-employees_employeelikes-0002.sql`. Here we assume that the example from the comment in `view-employees_employeelikes-0002.sql` became the SQL in the file before we did this command.
+The historic file `view-employees_employeelikes-0002.sql` becomes a copy of `view-employees_employeelikes-latest.sql`, and the corresponding migration 0002 is modified to use this historic file.
 
 ```sql
 /*
-    Commit this file before you make changes to it, so you can look at the commits that follow for a diff.
-    You can remove this comment before committing or after, whichever you'd prefer.
-    Alter the SQL as needed and then commit the changes.
+    This file was generated using django-view-manager 1.0.0.
+    Modify the SQL for this view and then commit the changes.
+    You can remove this comment before committing.
+
+    When you have changes to make to this sql, you need to run the makeviewmigration command
+    before altering the sql, so the historical sql file is created with the correct contents.
 */
 DROP VIEW IF EXISTS employees_employeelikes;
 CREATE VIEW
