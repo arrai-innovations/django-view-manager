@@ -12,7 +12,6 @@ description = """\
     management command, so you can diff SQL files, or view diffs in your commits, providing you commit the
     new file before making changes.
     """
-readme = "README.md"
 requires-python = ">=3.7"
 license = { file = "LICENSE" }
 authors = [
