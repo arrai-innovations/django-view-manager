@@ -11,17 +11,17 @@ def clean_up_files():
         "tests/animals/migrations/__init__.py",
         "tests/animals/migrations/0001_initial.py",
         "tests/animals/migrations/0002_create_view.py",
-        "tests/animals/sql/view-animals_pets-0002.sql",
+        "tests/animals/sql/view-animals_pets-latest.sql",
         "tests/employees/migrations/0002_create_view.py",
         "tests/employees/migrations/0003_add_date_to_employee_likes.py",
         "tests/employees/sql/view-employees_employeelikes-0002.sql",
-        "tests/employees/sql/view-employees_employeelikes-0003.sql",
+        "tests/employees/sql/view-employees_employeelikes-latest.sql",
         "tests/food/migrations/__init__.py",
         "tests/food/migrations/0001_initial.py",
         "tests/food/migrations/0002_create_view.py",
         "tests/food/migrations/0003_change_something.py",
         "tests/food/sql/view-food_sweets-0002.sql",
-        "tests/food/sql/view-food_sweets-0003.sql",
+        "tests/food/sql/view-food_sweets-latest.sql",
     )
 
     for path in files_to_delete:
