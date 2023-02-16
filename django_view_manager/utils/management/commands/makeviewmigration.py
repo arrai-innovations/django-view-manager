@@ -422,11 +422,7 @@ class Command(BaseCommand):
             raise Exception("Unable to find the name and number of the newly created migration.")
 
         # Is there a `latest` SQL view and migration?
-        latest_sql_filename = sql_numbers_and_names.get(LATEST_VIEW_NUMBER, None)
         if latest_migration_number is not None and latest_migration_name is not None:
-            if latest_sql_filename is None:
-                raise Exception(f"Unable to find the 'latest' sql view in app '{app_label}'.")
-
             latest_sql_filename = f"view-{db_table_name}-{LATEST_VIEW_NAME}.sql"
             historical_sql_filename = f"view-{db_table_name}-{str(latest_migration_number).zfill(4)}.sql"
 
