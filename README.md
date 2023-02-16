@@ -45,32 +45,24 @@ It may work in an older django, but we only test against supported versions.
 
 The following folder and file structure is used by this management command. If you were to run the commands listed under usage, you would end up with the following:
 
-<style>
-folder {color: #3B78FF;}
-</style>
-
-<pre>
-<folder>project_name</folder>
-    <folder>employees</folder>
-        <folder>migrations</folder>
+```
+project_name
+    employees
+        migrations
             0001_initial.py
             0002_create_view.py
             0003_add_date_to_employee_likes.py
-        <folder>sql</folder>
+        sql
             view-employees_employeelikes-0002.sql
             view-employees_employeelikes-latest.sql
         __init__.py
         apps.py
         models.py
-</pre>
+```
 
 The numbers in a filename are associated to the corresponding migration number, and are meant to be historic.
 
 ## Usage
-
-<style>
-green {color: #16C60C;}
-</style>
 
 If you need to know how to run a django management command, please refer to the documentation in django for more details.
 
@@ -101,29 +93,27 @@ $ python manage.py makeviewmigration employees_employeelikes create_view
 
 The results will be:
 
-<pre>
-
-<green>Created 'migrations' folder in app 'employees'.</green>
+```
+Created 'migrations' folder in app 'employees'.
 
 Creating initial migration for app 'employees'.
 Migrations for 'employees':
   project_name/employees/migrations/0001_initial.py
     - Create model Sweets
 
-<green>Created 'sql' folder in app 'employees'.</green>
+Created 'sql' folder in app 'employees'.
 
 Creating empty migration for the new SQL view.
 Migrations for 'employees':
   project_name/employees/migrations/0002_create_view.py
     - Raw SQL operation
 
-<green>Created new SQL view file - 'view-employees_employeelikes-latest.sql'.</green>
+Created new SQL view file - 'view-employees_employeelikes-latest.sql'.
 
-<green>Modified migration '0002_create_view' to read from 'view-employees_employeelikes-latest.sql'.</green>
+Modified migration '0002_create_view' to read from 'view-employees_employeelikes-latest.sql'.
 
 Done - You can now edit 'view-employees_employeelikes-latest.sql'.
-
-</pre>
+```
 
 Instructions will be added into the `view-employees_employeelikes-latest.sql` file:
 
@@ -161,22 +151,20 @@ $ python manage.py makeviewmigration employees_employeelikes add_date_to_employe
 
 The results will be:
 
-<pre>
-
+```
 Creating empty migration for the SQL changes.
 Migrations for 'employees':
   tests/employees/migrations/0003_add_date_to_employee_likes.py
     - Raw SQL operation
 
-<green>Created historical SQL view file - 'view-employees_employeelikes-0002.sql'.</green>
+Created historical SQL view file - 'view-employees_employeelikes-0002.sql'.
 
-<green>Modified migration '0002_create_view' to read from 'view-employees_employeelikes-0002.sql'.</green>
+Modified migration '0002_create_view' to read from 'view-employees_employeelikes-0002.sql'.
 
-<green>Modified migration '0003_add_date_to_employee_likes' to read from 'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0002.sql'.</green>
+Modified migration '0003_add_date_to_employee_likes' to read from 'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0002.sql'.
 
 Done - You can now edit 'view-employees_employeelikes-latest.sql'.
-
-</pre>
+```
 
 The historic file `view-employees_employeelikes-0002.sql` becomes a copy of `view-employees_employeelikes-latest.sql`, and the corresponding migration 0002 is modified to use this historic file.
 
