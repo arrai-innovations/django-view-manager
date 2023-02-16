@@ -5,6 +5,8 @@ from tests.test_case import ManagementCommandTestCase
 
 # Tests cannot be run in parallel.
 class FoodTestCase(ManagementCommandTestCase):
+    maxDiff = None
+
     def test_no_migrations_or_sql_folders(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "food_sweets", "create_view"])
         self.assertTupleEqual(err, ())

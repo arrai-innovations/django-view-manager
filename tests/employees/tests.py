@@ -5,6 +5,8 @@ from tests.test_case import ManagementCommandTestCase
 
 # Tests cannot be run in parallel.
 class EmployeesTestCase(ManagementCommandTestCase):
+    maxDiff = None
+
     def test_no_args(self):
         out, err = self.call_command(["manage.py", "makeviewmigration"])
         self.assertIn(

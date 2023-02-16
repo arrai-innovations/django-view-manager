@@ -5,6 +5,8 @@ from tests.test_case import ManagementCommandTestCase
 
 # Tests cannot be run in parallel.
 class AnimalsTestCase(ManagementCommandTestCase):
+    maxDiff = None
+
     def test_no_migrations_folder(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "animals_pets", "create_view"])
         self.assertTupleEqual(err, ())

@@ -50,7 +50,6 @@ class TestRunner(DiscoverRunner):
     verbosity = 2
     shuffle = None
     buffer = True
-    maxDiff = None
 
     def teardown_databases(self, old_config, **kwargs):
         super().teardown_databases(old_config, **kwargs)
