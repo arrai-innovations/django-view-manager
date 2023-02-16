@@ -79,6 +79,7 @@ line-length = 120
 branch = true
 omit = [
     "*/tests/*",
+    "manage.py",
 ]
 
 [tool.coverage.report]
