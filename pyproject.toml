@@ -5,14 +5,6 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "django-view-manager"
 description = "A management command for django that provides diffs of sql views."
-long_description = """\
-    A management command for django that provides a semi-automated way to have diffs of sql views.\
-    The SQL of a view is stored in a file and read into a generated migration.\
-    If you create and modify views in migrations, this management command can help automate the creation of
-    migrations that read in files containing SQL views.  New versions are created with each use of the
-    management command, so you can diff SQL files, or view diffs in your commits, providing you commit the
-    new file before making changes.
-    """
 requires-python = ">=3.7"
 license = { file = "LICENSE" }
 authors = [
