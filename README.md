@@ -10,7 +10,7 @@ Refer to folder and file structure, and usage, for more detailed information.
 
 ![Python 3.7 - Django 3.2](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.7%20-%20django%203.2.svg) [![Coverage](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.7%20-%20django%203.2.coverage.svg)](https://docs.arrai-dev.com/django-view-manager/artifacts/main/htmlcov_python%203.7%20-%20django%203.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.svg) [![Coverage](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.coverage.svg)](https://docs.arrai-dev.com/django-view-manager/artifacts/main/htmlcov_python&203.8&20-&20django&203.2/)
+![Python%203.7%20-%20Django%203.2](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.svg) [![Coverage](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.coverage.svg)](https://docs.arrai-dev.com/django-view-manager/artifacts/main/htmlcov_python%203.8%20-%20django%203.2/)
 
 ![Python%203.7%20-%20Django%203.2](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%204.0.svg) [![Coverage](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.8%20-%20django%204.0.coverage.svg)](https://docs.arrai-dev.com/django-view-manager/artifacts/main/htmlcov_python%203.8%20-%20django%204.0/)
 
