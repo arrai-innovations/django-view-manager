@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.6.3"]
+requires = ["setuptools>=67.3.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -35,13 +35,18 @@ classifiers = [
 dependencies = [
     "django>=3.2.0",
 ]
-dynamic = ["version"]
+dynamic = ["readme", "version"]
 
 [project.urls]
 repository = "https://github.com/arrai-innovations/django-view-manager/"
 
+[tool.setuptools]
+packages = ["django_view_manager"]
+license-files = ['LICENSE']
+
 [tool.setuptools.dynamic]
-version = {attr = "VERSION"}
+readme = {file = "README.md", content_type = "text/markdown"}
+version = {file = "VERSION"}
 
 [tool.flake8]
 exclude = ".git"
@@ -101,4 +106,3 @@ disable = ['missing-docstring', 'invalid-name']
 [tool.pytest.ini_options]
 addopts = "--ds=config.settings.test"
 python_files = "utils/tests.py"
-
