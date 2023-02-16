@@ -51,11 +51,6 @@ LATEST_VIEW_NUMBER = decimal.Decimal("Infinity")
 MIGRATION_MODIFIED_COMMENT = "# Modified using django-view-manager {version}.  Please do not delete this comment.\n"
 
 
-def create_parser(self, prog_name, subcommand, **kwargs):
-    self._called_from_command_line = True
-    return BaseCommand._create_parser(self, prog_name, subcommand, **kwargs)
-
-
 class Command(BaseCommand):
     help = (  # noqa: A003
         "In the appropriate app, two files will get created. "
