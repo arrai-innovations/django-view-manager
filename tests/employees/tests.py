@@ -36,12 +36,12 @@ class EmployeesTestCase(ManagementCommandTestCase):
                 "",
                 "Creating empty migration for the new SQL view.",
                 "Migrations for 'employees':",
-                "tests/employees/migrations/0002_create_view.py",
+                "tests/employees/migrations/0003_create_view.py",
                 "- Raw SQL operation",
                 "",
                 "Created new SQL view file - 'view-employees_employeelikes-latest.sql'.",
                 "",
-                "Modified migration '0002_create_view' to read from 'view-employees_employeelikes-latest.sql'.",
+                "Modified migration '0003_create_view' to read from 'view-employees_employeelikes-latest.sql'.",
                 "",
                 "Done - You can now edit 'view-employees_employeelikes-latest.sql'.",
                 "",
@@ -49,7 +49,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
         )
         self.assertTrue(os.path.exists("tests/employees/migrations/__init__.py"))
         self.assertTrue(os.path.exists("tests/employees/migrations/0001_initial.py"))
-        self.assertTrue(os.path.exists("tests/employees/migrations/0002_create_view.py"))
+        self.assertTrue(os.path.exists("tests/employees/migrations/0003_create_view.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
 
         with open("VERSION", "r") as f:
@@ -102,22 +102,22 @@ class EmployeesTestCase(ManagementCommandTestCase):
                 "",
                 "Creating empty migration for the SQL changes.",
                 "Migrations for 'employees':",
-                "tests/employees/migrations/0003_add_date_to_employee_likes.py",
+                "tests/employees/migrations/0004_add_date_to_employee_likes.py",
                 "- Raw SQL operation",
                 "",
-                "Created historical SQL view file - 'view-employees_employeelikes-0002.sql'.",
+                "Created historical SQL view file - 'view-employees_employeelikes-0003.sql'.",
                 "",
-                "Modified migration '0002_create_view' to read from 'view-employees_employeelikes-0002.sql'.",
+                "Modified migration '0003_create_view' to read from 'view-employees_employeelikes-0003.sql'.",
                 "",
-                "Modified migration '0003_add_date_to_employee_likes' to read from "  # No comma here
-                "'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0002.sql'.",
+                "Modified migration '0004_add_date_to_employee_likes' to read from "  # No comma here
+                "'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0003.sql'.",
                 "",
                 "Done - You can now edit 'view-employees_employeelikes-latest.sql'.",
                 "",
             ),
         )
-        self.assertTrue(os.path.exists("tests/employees/migrations/0003_add_date_to_employee_likes.py"))
-        self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0002.sql"))
+        self.assertTrue(os.path.exists("tests/employees/migrations/0004_add_date_to_employee_likes.py"))
+        self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0003.sql"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
         with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "r") as f:
             content = f.read()
@@ -156,7 +156,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
             )
 
         # Remove the generated line from the 'latest' migration, so we run the code to add it back in.
-        with open("tests/employees/migrations/0003_add_date_to_employee_likes.py", "r+") as f:
+        with open("tests/employees/migrations/0004_add_date_to_employee_likes.py", "r+") as f:
             lines = f.readlines()
             modified_line_no = 0
             for line_no, line in enumerate(lines):
@@ -175,7 +175,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
         self.assertTupleEqual(err, ())
 
         modified_migration_text = (  # Added here, so we don't go over 120 characters on a line.
-            "Modified migration '0003_add_date_to_employee_likes' to read from 'view-employees_employeelikes-0003.sql'."
+            "Modified migration '0004_add_date_to_employee_likes' to read from 'view-employees_employeelikes-0004.sql'."
         )
         self.assertTupleEqual(
             out,
@@ -183,24 +183,24 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
                 "",
                 "Creating empty migration for the SQL changes.",
                 "Migrations for 'employees':",
-                "tests/employees/migrations/0004_add_rating_to_employee_likes.py",
+                "tests/employees/migrations/0005_add_rating_to_employee_likes.py",
                 "- Raw SQL operation",
                 "",
-                "Created historical SQL view file - 'view-employees_employeelikes-0003.sql'.",
+                "Created historical SQL view file - 'view-employees_employeelikes-0004.sql'.",
                 "",
                 modified_migration_text,
                 "",
-                "Modified migration '0004_add_rating_to_employee_likes' to read from "  # No comma here
-                "'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0003.sql'.",
+                "Modified migration '0005_add_rating_to_employee_likes' to read from "  # No comma here
+                "'view-employees_employeelikes-latest.sql' and 'view-employees_employeelikes-0004.sql'.",
                 "",
                 "Done - You can now edit 'view-employees_employeelikes-latest.sql'.",
                 "",
             ),
         )
-        self.assertTrue(os.path.exists("tests/employees/migrations/0003_add_date_to_employee_likes.py"))
-        self.assertTrue(os.path.exists("tests/employees/migrations/0004_add_rating_to_employee_likes.py"))
-        self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0002.sql"))
+        self.assertTrue(os.path.exists("tests/employees/migrations/0004_add_date_to_employee_likes.py"))
+        self.assertTrue(os.path.exists("tests/employees/migrations/0005_add_rating_to_employee_likes.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0003.sql"))
+        self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0004.sql"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
         with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "r") as f:
             content = f.read()
