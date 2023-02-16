@@ -235,8 +235,7 @@ class Command(BaseCommand):
         latest_sql_number = None
 
         for migration_number in migration_numbers_and_names:
-            if migration_number > largest_migration_number:
-                largest_migration_number = migration_number
+            largest_migration_number = migration_number
 
         for sql_number in sql_numbers_and_names:
             if sql_number is LATEST_VIEW_NUMBER:
