@@ -102,7 +102,3 @@ max-line-length = 120
 
 [tool.pylint.messages_control]
 disable = ['missing-docstring', 'invalid-name']
-
-[tool.pytest.ini_options]
-addopts = "--ds=config.settings.test"
-python_files = "utils/tests.py"
