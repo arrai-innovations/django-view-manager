@@ -422,7 +422,7 @@ class Command(BaseCommand):
         )
 
         if new_migration_name is None:
-            raise Exception("Unable to find the name and number of the newly created migration.")
+            raise RuntimeError("Unable to find the name and number of the newly created migration.")
 
         # Is there a `latest` SQL view and migration?
         if latest_migration_number is not None and latest_migration_name is not None:
