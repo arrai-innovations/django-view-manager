@@ -61,9 +61,13 @@ class Command(BaseCommand):
     )
 
     def get_model(self, db_table_name):
+        matching_model = None
         for model in apps.get_models(include_auto_created=True, include_swapped=True):
             if getattr(model._meta, "db_table", "") == db_table_name:
-                return model
+                matching_model = model
+                break
+
+        return matching_model
 
     def get_choices(self):
         return sorted(
