@@ -172,7 +172,7 @@ class Command(BaseCommand):
                 if migration_line.find("Modified using django-view-manager") != -1:
                     found_modified_comment = True
 
-                if not found_modified_comment and migration_line_no > 10:
+                if not found_modified_comment and migration_line_no > 20:
                     break
 
                 if (
