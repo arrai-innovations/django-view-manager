@@ -65,7 +65,6 @@ class Command(BaseCommand):
         for model in apps.get_models(include_auto_created=True, include_swapped=True):
             if getattr(model._meta, "db_table", "") == db_table_name:
                 matching_model = model
-                break
 
         return matching_model
 
