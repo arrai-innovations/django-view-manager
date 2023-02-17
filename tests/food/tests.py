@@ -1,5 +1,6 @@
 import os
 import shutil
+from unittest import mock
 
 from tests.test_case import ManagementCommandTestCase
 
@@ -45,6 +46,29 @@ class FoodTestCase(ManagementCommandTestCase):
         # Cleanup - We need to delete these folders for the other tests in this class.
         shutil.rmtree("tests/food/migrations")
         shutil.rmtree("tests/food/sql")
+
+    def test_show_migrations_err_when_calling_command(self):
+        with mock.patch(
+            "django_view_manager.utils.management.commands.makeviewmigration.call_command"
+        ) as mocked_call_command:
+            mocked_call_command.side_effect = self.mock_django_call_command_writing_an_error
+            out, err = self.call_command(["manage.py", "makeviewmigration", "food_sweets", "create_view"])
+        self.assertTupleEqual(err, ())
+        self.assertTupleEqual(
+            out,
+            (
+                "",
+                "Created 'migrations' folder in app 'food'.",
+                "An error occurred.",
+            ),
+        )
+        self.assertTrue(os.path.exists("tests/food/migrations/__init__.py"))
+        self.assertFalse(os.path.exists("tests/food/migrations/0001_initial.py"))
+        self.assertFalse(os.path.exists("tests/food/migrations/0002_create_view.py"))
+        self.assertFalse(os.path.exists("tests/food/sql/view-food_sweets-latest.sql"))
+
+        # Cleanup - We need to delete these folders for the other tests in this class.
+        shutil.rmtree("tests/food/migrations")
 
     def test_show_migrations_err_when_creating_initial_migration(self):
         out, err = self.mock_call_command_returning_an_error("showmigrations", 1, "food_sweets", "create_view")

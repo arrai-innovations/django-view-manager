@@ -1,6 +1,7 @@
 import contextlib
 import importlib
 import io
+import sys
 from unittest import mock
 
 from django.core.management import call_command
@@ -66,7 +67,7 @@ class ManagementCommandTestCase(TransactionTestCase):
         # then set err and continue with the code as it would in _call_command in the management command,
         # otherwise we run the code as it would have in _call_command in the management command.
         if args[0] == self._mock_command and self._mock_command_count == self._mock_command_on_count:
-            err.write("An error occurred.")
+            err.write("An error occurred.\n")
 
         else:
             # If we don't do this, sometimes we can't import a newly created migration.
@@ -84,3 +85,6 @@ class ManagementCommandTestCase(TransactionTestCase):
         # Return the results.
         out.seek(0)
         return out.readlines()
+
+    def mock_django_call_command_writing_an_error(self, *args):
+        sys.stderr.write("An error occurred.\n")
