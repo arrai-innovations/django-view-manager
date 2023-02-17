@@ -11,6 +11,7 @@ def clean_up_files():
         "tests/animals/migrations/__init__.py",
         "tests/animals/migrations/0001_initial.py",
         "tests/animals/migrations/0002_create_view.py",
+        "tests/animals/sql/view-animals_pets-bad.sql",
         "tests/animals/sql/view-animals_pets-latest.sql",
         "tests/employees/migrations/0003_create_view.py",
         "tests/employees/migrations/0004_add_date_to_employee_likes.py",

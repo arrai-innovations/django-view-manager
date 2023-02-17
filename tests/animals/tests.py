@@ -7,7 +7,10 @@ from tests.test_case import ManagementCommandTestCase
 class AnimalsTestCase(ManagementCommandTestCase):
     maxDiff = None
 
-    def test_no_migrations_folder(self):
+    def test_no_migrations_folder_and_bad_sql_file(self):
+        with open("tests/animals/sql/view-animals_pets-bad.sql", "w") as f:
+            f.write("Has a bad filename.")
+
         out, err = self.call_command(["manage.py", "makeviewmigration", "animals_pets", "create_view"])
         self.assertTupleEqual(err, ())
         self.assertTupleEqual(
