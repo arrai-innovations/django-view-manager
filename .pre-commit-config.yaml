@@ -1,6 +1,6 @@
 exclude: ".git|.tox"
 default_stages: [commit]
-fail_fast: yes
+fail_fast: true
 
 default_language_version:
     python: python3.8
