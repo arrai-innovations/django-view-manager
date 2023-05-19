@@ -57,9 +57,17 @@ or
 $ pipenv install django-view-manager
 ```
 
-# Requirements
+Add `django-view-manager.utils` to the INSTALLED_APPS in settings. If possible, do this in your development settings only, as you don't need this package on a production server.
 
-A `Pipfile` and `dev_requirements.txt` exist for convenience. You can choose which you want to use.
+```python
+INSTALLED_APPS = [
+    ...
+    "django-view-manager.utils",
+    ...
+]
+```
+
+# Requirements
 
 At least a django 3.2 and python 3.7.
 
