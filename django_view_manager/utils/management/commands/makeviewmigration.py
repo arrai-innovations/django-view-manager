@@ -349,10 +349,10 @@ class Command(BaseCommand):
                 f'forward_sql_filename = "{forward_sql_filename}"\n',
                 f'reverse_sql_filename = "{reverse_sql_filename}"\n' if reverse_sql_filename else "",
                 "\n",
-                'with open(f"{os.path.join(sql_path, forward_sql_filename)}", mode="r") as f:\n',
+                'with open(os.path.join(sql_path, forward_sql_filename), mode="r") as f:\n',
                 "    forwards_sql = f.read()\n",
                 "\n",
-                'with open(f"{os.path.join(sql_path, reverse_sql_filename)}", mode="r") as f:\n'
+                'with open(os.path.join(sql_path, reverse_sql_filename), mode="r") as f:\n'
                 if reverse_sql_filename
                 else "",
                 "    reverse_sql = f.read()\n" if reverse_sql_filename else "",
