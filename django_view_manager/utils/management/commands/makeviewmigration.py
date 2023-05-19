@@ -11,8 +11,11 @@ from django.db import migrations
 from django.db.transaction import atomic
 
 
-COPIED_SQL_VIEW_CONTENT = """/*
-    This file was generated using django-view-manager {version}.
+VERSION = "1.0.2"
+
+
+COPIED_SQL_VIEW_CONTENT = f"""/*
+    This file was generated using django-view-manager {VERSION}.
     Modify the SQL for this view and then commit the changes.
     You can remove this comment before committing.
 
@@ -21,8 +24,8 @@ COPIED_SQL_VIEW_CONTENT = """/*
 */
 """
 
-INITIAL_SQL_VIEW_CONTENT = """/*
-    This file was generated using django-view-manager {version}.
+INITIAL_SQL_VIEW_CONTENT = f"""/*
+    This file was generated using django-view-manager {VERSION}.
     Add the SQL for this view and then commit the changes.
     You can remove this comment before committing.
 
@@ -30,9 +33,9 @@ INITIAL_SQL_VIEW_CONTENT = """/*
     before altering the sql, so the historical sql file is created with the correct contents.
 
     eg.
-    DROP VIEW IF EXISTS {view_name};
+    DROP VIEW IF EXISTS {{view_name}};
     CREATE VIEW
-        {view_name} AS
+        {{view_name}} AS
     SELECT
         1 AS id,
         42 AS employee_id,
@@ -48,7 +51,7 @@ LATEST_VIEW_NAME = "latest"
 LATEST_VIEW_NUMBER = decimal.Decimal("Infinity")
 
 # Add a comment right after the Django generated comment, to help find our modified migrations.
-MIGRATION_MODIFIED_COMMENT = "# Modified using django-view-manager {version}.  Please do not delete this comment.\n"
+MIGRATION_MODIFIED_COMMENT = f"# Modified using django-view-manager {VERSION}.  Please do not delete this comment.\n"
 
 
 class Command(BaseCommand):
@@ -92,11 +95,6 @@ class Command(BaseCommand):
             action="store",
             help="The name of the migration that will be created.",
         )
-
-    @staticmethod
-    def _get_our_version_number():
-        with open("VERSION", "r") as f:
-            return f.read().strip()
 
     def _call_command(self, *args):
         err = io.StringIO()
@@ -278,7 +276,7 @@ class Command(BaseCommand):
             if "This file was generated using django-view-manager" not in content:
                 f_in.seek(0)
                 f_in.truncate()
-                f_in.write(COPIED_SQL_VIEW_CONTENT.format(version=self._get_our_version_number()))
+                f_in.write(COPIED_SQL_VIEW_CONTENT)
                 f_in.write(content)
 
         self.stdout.write(self.style.SUCCESS(f"\nCreated historical SQL view file - '{historical_sql_filename}'."))
@@ -287,7 +285,7 @@ class Command(BaseCommand):
         latest_sql_filename = f"view-{db_table_name}-{LATEST_VIEW_NAME}.sql"
 
         with open(os.path.join(sql_path, latest_sql_filename), "w", encoding="utf-8") as f:
-            f.write(INITIAL_SQL_VIEW_CONTENT.format(version=self._get_our_version_number(), view_name=db_table_name))
+            f.write(INITIAL_SQL_VIEW_CONTENT.format(view_name=db_table_name))
 
         self.stdout.write(self.style.SUCCESS(f"\nCreated new SQL view file - '{latest_sql_filename}'."))
 
@@ -308,9 +306,7 @@ class Command(BaseCommand):
             lines[latest_sql_line_no] = lines[latest_sql_line_no].replace(latest_sql_filename, historical_sql_filename)
             if add_modified_message:
                 # Insert the modified comment after the Django generated comment.
-                lines[generated_line_no + 1 : generated_line_no + 1] = MIGRATION_MODIFIED_COMMENT.format(
-                    version=self._get_our_version_number()
-                )
+                lines[generated_line_no + 1 : generated_line_no + 1] = MIGRATION_MODIFIED_COMMENT
             f.seek(0)
             f.truncate(0)
             f.writelines(lines)
@@ -367,9 +363,7 @@ class Command(BaseCommand):
                 "\n",
             ]
             # Insert the generated comment at the top.
-            lines[generated_line_no + 1 : generated_line_no + 1] = [
-                MIGRATION_MODIFIED_COMMENT.format(version=self._get_our_version_number())
-            ]
+            lines[generated_line_no + 1 : generated_line_no + 1] = [MIGRATION_MODIFIED_COMMENT]
             f.seek(0)
             f.writelines(lines)
 
