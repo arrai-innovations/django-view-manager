@@ -30,6 +30,8 @@ Refer to folder and file structure, and usage, for more detailed information.
 
 ![Python%203.7%20-%20Django%203.2](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.11%20-%20django%204.1.svg) [![Coverage](https://docs.arrai-dev.com/django-view-manager/artifacts/main/python%203.11%20-%20django%204.1.coverage.svg)](https://docs.arrai-dev.com/django-view-manager/artifacts/main/htmlcov_python%203.11%20-%20django%204.1/)
 
+**Table of Contents**
+
 <!-- prettier-ignore-start -->
 <!--TOC-->
 
@@ -112,8 +114,8 @@ The results will be:
 
 ```shell
 $ python manage.py makeviewmigration [-h] [--version] [-v {0,1,2,3}] [--settings SETTINGS] [--pythonpath PYTHONPATH] [--traceback] [--no-color] [--force-color]
-                                   [--skip-checks]
-                                   {animals_pets,employees_employeelikes,food_sweets} migration_name
+                                     [--skip-checks]
+                                     {animals_pets,employees_employeelikes,food_sweets} migration_name
 manage.py makeviewmigration: error: the following arguments are required: db_table_name, migration_name
 ```
 
