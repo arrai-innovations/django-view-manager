@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def _is_migration_modified(db_table_name, migrations_path, migration_name, num):
-        with open(os.path.join(migrations_path, f"{migration_name}.py"), "r") as f:
+        with open(os.path.join(migrations_path, f"{migration_name}.py"), "r", encoding="utf-8") as f:
             # Did we modify this migration?  Check the first 10 lines for our modified comment.
             found_modified_comment = False
             for migration_line_no, migration_line in enumerate(f.readlines()):
@@ -288,6 +288,37 @@ class Command(BaseCommand):
             f.write(INITIAL_SQL_VIEW_CONTENT.format(view_name=db_table_name))
 
         self.stdout.write(self.style.SUCCESS(f"\nCreated new SQL view file - '{latest_sql_filename}'."))
+
+    def _find_and_rewrite_migrations_containing_latest(
+        self,
+        migration_numbers_and_names,
+        migrations_path,
+        latest_sql_filename,
+        historical_sql_filename,
+    ):
+        for migration_name in migration_numbers_and_names.values():
+            with open(os.path.join(migrations_path, f"{migration_name}.py"), "r+", encoding="utf-8") as f:
+                lines = f.readlines()
+                modified_migration = False
+                sql_line_no = 0
+                for line_no, line in enumerate(lines):
+                    if line.find(latest_sql_filename) != -1:
+                        sql_line_no = line_no
+                        break
+
+                if sql_line_no:
+                    lines[sql_line_no] = lines[sql_line_no].replace(latest_sql_filename, historical_sql_filename)
+                    modified_migration = True
+
+                if modified_migration:
+                    self.stdout.write(
+                        self.style.SUCCESS(
+                            f"\nModified migration '{migration_name}' to read from '{historical_sql_filename}'."
+                        )
+                    )
+                    f.seek(0)
+                    f.truncate(0)
+                    f.writelines(lines)
 
     def _rewrite_latest_migration(self, migrations_path, migration_name, latest_sql_filename, historical_sql_filename):
         with open(os.path.join(migrations_path, migration_name + ".py"), "r+", encoding="utf-8") as f:
@@ -434,6 +465,14 @@ class Command(BaseCommand):
                 self.style.SUCCESS(
                     f"\nModified migration '{latest_migration_name}' to read from '{historical_sql_filename}'."
                 )
+            )
+
+            # Find any additional migrations which should be switched to use the historical sql view filename.
+            self._find_and_rewrite_migrations_containing_latest(
+                migration_numbers_and_names,
+                migrations_path,
+                latest_sql_filename,
+                historical_sql_filename,
             )
 
             # Update the empty migration to use the `latest` sql view filename.
