@@ -15,13 +15,18 @@ class EmployeesTestCase(ManagementCommandTestCase):
         )
         # Depending on the width of your console, migration_name may be on the
         # same line as the db_table_name, or it may wrap it onto the next line.
-        self.assertIn("{animals_pets,employees_employeelikes,food_sweets} migration_name", " ".join(err))
+        self.assertIn(
+            "{animals_pets,employees_employeelikes,food_sweets,"
+            "store_productcalculations,store_purchasedproductcalculations} migration_name",
+            " ".join(err),
+        )
 
     def test_bad_db_table_name(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeehates", "create_view"])
         self.assertIn(
             "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
-            "employeehates' (choose from 'animals_pets', 'employees_employeelikes', 'food_sweets')",
+            "employeehates' (choose from 'animals_pets', 'employees_employeelikes', 'food_sweets', "
+            "'store_productcalculations', 'store_purchasedproductcalculations')",
             err,
         )
 

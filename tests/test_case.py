@@ -11,6 +11,20 @@ from django.test import TransactionTestCase
 
 # Tests cannot be run in parallel.
 class ManagementCommandTestCase(TransactionTestCase):
+    def tearDown(self):
+        super().tearDown()
+
+        # Clean up sys.modules between tests, because some tests delete migrations or the migration folder.
+        keys_to_delete = set()
+        keys_to_find = ("tests.animals", "tests.employees", "tests.food", "tests.store")
+        for key in sys.modules.keys():
+            for key_to_find in keys_to_find:
+                if key_to_find in key:
+                    keys_to_delete.add(key)
+
+        for key in keys_to_delete:
+            del sys.modules[key]
+
     def call_command(self, command):
         self.stderr = err = io.StringIO()
         self.stdout = out = io.StringIO()
