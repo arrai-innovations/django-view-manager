@@ -27,6 +27,8 @@ def clean_up_files():
         "tests/food/sql/view-food_sweets-latest.sql",
         "tests/store/migrations/0005_modify_view.py",
         "tests/store/sql/view-store_purchasedproductcalculations-0004.sql",
+        "tests/musicians/migrations/0005_add_album_count.py",
+        "tests/musicians/sql/view-band_info-0003-add_founded_date.sql",
     )
 
     for path in files_to_delete:
@@ -50,31 +52,24 @@ def clean_up_folders():
 
 
 def replace_files():
-    with open(
-        os.path.join("tests", "test_data", "store", "migrations", "0003_create_purchased_product_calculations.py"),
-        "r",
-        encoding="utf-8",
-    ) as f_in:
-        content = f_in.read()
+    for filename in (
+        os.path.join("store", "migrations", "0003_create_purchased_product_calculations.py"),
+        os.path.join("store", "migrations", "0004_add_markup_amount_to_product_calculations.py"),
+        os.path.join("musicians", "migrations", "0003_add_founded_date.py"),
+        os.path.join("musicians", "sql", "view-band_info-latest.sql"),
+    ):
         with open(
-            os.path.join("tests", "store", "migrations", "0003_create_purchased_product_calculations.py"),
-            "w",
+            os.path.join("tests", "test_data", filename),
+            "r",
             encoding="utf-8",
-        ) as f_out:
-            f_out.write(content)
-
-    with open(
-        os.path.join("tests", "test_data", "store", "migrations", "0004_add_markup_amount_to_product_calculations.py"),
-        "r",
-        encoding="utf-8",
-    ) as f_in:
-        content = f_in.read()
-        with open(
-            os.path.join("tests", "store", "migrations", "0004_add_markup_amount_to_product_calculations.py"),
-            "w",
-            encoding="utf-8",
-        ) as f_out:
-            f_out.write(content)
+        ) as f_in:
+            content = f_in.read()
+            with open(
+                os.path.join("tests", filename),
+                "w",
+                encoding="utf-8",
+            ) as f_out:
+                f_out.write(content)
 
 
 class TestRunner(DiscoverRunner):
