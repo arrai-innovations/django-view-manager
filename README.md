@@ -2,6 +2,8 @@
 
 A management command for django, designed to provide a way in pull requests, to see a diff of the sql (`CREATE VIEW ...`) for unmanaged models.
 
+Capable of handling migrations with the same number (refer to the musicians app and test) and partially capable of handing views that use other views. Views using views requires some manual additions to migrations, so it can drop required views and set them back up (refer to migration 0004 in the store app for how this can be accomplished). Once set up, it is capable of updating the sql view name in any migration that uses it.
+
 The management command creates an `sql` folder inside an app, along with files like `view-animals_pets-latest.sql` (live) and `view-animals_pets-0002.sql` (historical), where you write your sql. Migrations are also created in the process, which read these files, so you don't need to create them yourself.
 
 Refer to folder and file structure, and usage, for more detailed information.
