@@ -11,7 +11,7 @@ from django.db import migrations
 from django.db.transaction import atomic
 
 
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 
 
 COPIED_SQL_VIEW_CONTENT = f"""/*
@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def _is_migration_modified(db_table_name, migrations_path, migration_name, num):
-        with open(os.path.join(migrations_path, f"{migration_name}.py"), "r") as f:
+        with open(os.path.join(migrations_path, f"{migration_name}.py"), "r", encoding="utf-8") as f:
             # Did we modify this migration?  Check the first 10 lines for our modified comment.
             found_modified_comment = False
             for migration_line_no, migration_line in enumerate(f.readlines()):
@@ -221,29 +221,32 @@ class Command(BaseCommand):
             if filename.startswith(view_name_start) and filename.endswith(view_name_end):
                 sql_file_num = filename.replace(view_name_start, "").replace(view_name_end, "")
 
+                sql_file_name = None
+                if "-" in sql_file_num:
+                    sql_file_num, sql_file_name = sql_file_num.split("-")
+
                 # Convert the number to an int, so we can max them.
                 if sql_file_num == LATEST_VIEW_NAME:
-                    sql_numbers_and_names[LATEST_VIEW_NUMBER] = filename
+                    sql_numbers_and_names[(LATEST_VIEW_NUMBER, sql_file_name)] = filename
 
                 elif sql_file_num.isdigit():
-                    sql_numbers_and_names[decimal.Decimal(sql_file_num)] = filename
+                    sql_numbers_and_names[(decimal.Decimal(sql_file_num), sql_file_name)] = filename
 
         return sql_numbers_and_names
 
     @staticmethod
     def _get_latest_migration_number_and_name(migration_numbers_and_names, sql_numbers_and_names):
-        largest_migration_number = decimal.Decimal(0)
-        latest_sql_number = None
+        largest_migration_number = latest_sql_number = None
 
-        for migration_number in migration_numbers_and_names:
-            largest_migration_number = migration_number
+        for migration_number, migration_name in migration_numbers_and_names.items():
+            largest_migration_number = (migration_number, migration_name)
 
-        for sql_number in sql_numbers_and_names:
+        for sql_number, sql_name in sql_numbers_and_names:
             if sql_number is LATEST_VIEW_NUMBER:
-                latest_sql_number = sql_number
+                latest_sql_number = (sql_number, sql_name)
 
         if largest_migration_number and latest_sql_number is not None:
-            return largest_migration_number, migration_numbers_and_names[largest_migration_number]
+            return largest_migration_number
 
         return None, None
 
@@ -288,6 +291,37 @@ class Command(BaseCommand):
             f.write(INITIAL_SQL_VIEW_CONTENT.format(view_name=db_table_name))
 
         self.stdout.write(self.style.SUCCESS(f"\nCreated new SQL view file - '{latest_sql_filename}'."))
+
+    def _find_and_rewrite_migrations_containing_latest(
+        self,
+        migration_numbers_and_names,
+        migrations_path,
+        latest_sql_filename,
+        historical_sql_filename,
+    ):
+        for migration_name in migration_numbers_and_names.values():
+            with open(os.path.join(migrations_path, f"{migration_name}.py"), "r+", encoding="utf-8") as f:
+                lines = f.readlines()
+                modified_migration = False
+                sql_line_no = 0
+                for line_no, line in enumerate(lines):
+                    if line.find(latest_sql_filename) != -1:
+                        sql_line_no = line_no
+                        break
+
+                if sql_line_no:
+                    lines[sql_line_no] = lines[sql_line_no].replace(latest_sql_filename, historical_sql_filename)
+                    modified_migration = True
+
+                if modified_migration:
+                    self.stdout.write(
+                        self.style.SUCCESS(
+                            f"\nModified migration '{migration_name}' to read from '{historical_sql_filename}'."
+                        )
+                    )
+                    f.seek(0)
+                    f.truncate(0)
+                    f.writelines(lines)
 
     def _rewrite_latest_migration(self, migrations_path, migration_name, latest_sql_filename, historical_sql_filename):
         with open(os.path.join(migrations_path, migration_name + ".py"), "r+", encoding="utf-8") as f:
@@ -367,6 +401,20 @@ class Command(BaseCommand):
             f.seek(0)
             f.writelines(lines)
 
+    def _get_historical_sql_filename(
+        self, db_table_name, latest_migration_number, latest_migration_name, sql_numbers_and_names
+    ):
+        historical_sql_filename = f"view-{db_table_name}-{str(latest_migration_number).zfill(4)}.sql"
+        # Do multiple migrations with the same number exist?
+        # If so, we need to include the migration name in the sql view name.
+        if historical_sql_filename in sql_numbers_and_names.values():
+            latest_migration_name = latest_migration_name.split("_", 1)[1]  # Remove the migration number.
+            historical_sql_filename = (
+                f"view-{db_table_name}-{str(latest_migration_number).zfill(4)}-{latest_migration_name}.sql"
+            )
+
+        return historical_sql_filename
+
     @atomic
     def handle(self, *args, **options):
         # Get passed in args.
@@ -421,7 +469,9 @@ class Command(BaseCommand):
         # Is there a `latest` SQL view and migration?
         if latest_migration_number is not None and latest_migration_name is not None:
             latest_sql_filename = f"view-{db_table_name}-{LATEST_VIEW_NAME}.sql"
-            historical_sql_filename = f"view-{db_table_name}-{str(latest_migration_number).zfill(4)}.sql"
+            historical_sql_filename = self._get_historical_sql_filename(
+                db_table_name, latest_migration_number, latest_migration_name, sql_numbers_and_names
+            )
 
             # Copy the `latest` SQL view to match the latest migration number.
             self._copy_latest_sql_view(sql_path, latest_sql_filename, historical_sql_filename)
@@ -434,6 +484,14 @@ class Command(BaseCommand):
                 self.style.SUCCESS(
                     f"\nModified migration '{latest_migration_name}' to read from '{historical_sql_filename}'."
                 )
+            )
+
+            # Find any additional migrations which should be switched to use the historical sql view filename.
+            self._find_and_rewrite_migrations_containing_latest(
+                migration_numbers_and_names,
+                migrations_path,
+                latest_sql_filename,
+                historical_sql_filename,
             )
 
             # Update the empty migration to use the `latest` sql view filename.

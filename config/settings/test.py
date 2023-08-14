@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "tests.animals",
     "tests.employees",
     "tests.food",
+    "tests.musicians",
+    "tests.store",
     "django_view_manager.utils",
 ]
 

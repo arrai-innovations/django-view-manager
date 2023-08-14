@@ -25,6 +25,12 @@ def clean_up_files():
         "tests/food/migrations/0003_change_something.py",
         "tests/food/sql/view-food_sweets-0002.sql",
         "tests/food/sql/view-food_sweets-latest.sql",
+        "tests/store/migrations/0005_modify_view.py",
+        "tests/store/sql/view-store_purchasedproductcalculations-0004.sql",
+        "tests/musicians/migrations/0005_add_album_count.py",
+        "tests/musicians/sql/view-band_info-0003-add_founded_date.sql",
+        "tests/musicians/migrations/0006_add_member_list.py",
+        "tests/musicians/sql/view-band_info-0005.sql",
     )
 
     for path in files_to_delete:
@@ -47,6 +53,27 @@ def clean_up_folders():
             shutil.rmtree(path)
 
 
+def replace_files():
+    for filename in (
+        os.path.join("store", "migrations", "0003_create_purchased_product_calculations.py"),
+        os.path.join("store", "migrations", "0004_add_markup_amount_to_product_calculations.py"),
+        os.path.join("musicians", "migrations", "0003_add_founded_date.py"),
+        os.path.join("musicians", "sql", "view-band_info-latest.sql"),
+    ):
+        with open(
+            os.path.join("tests", "test_data", filename),
+            "r",
+            encoding="utf-8",
+        ) as f_in:
+            content = f_in.read()
+            with open(
+                os.path.join("tests", filename),
+                "w",
+                encoding="utf-8",
+            ) as f_out:
+                f_out.write(content)
+
+
 class TestRunner(DiscoverRunner):
     parallel = 0
     interactive = False
@@ -60,3 +87,4 @@ class TestRunner(DiscoverRunner):
         # We do this cleanup, so you can locally run tests.
         clean_up_files()
         clean_up_folders()
+        replace_files()
