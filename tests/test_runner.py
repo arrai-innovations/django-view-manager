@@ -29,6 +29,8 @@ def clean_up_files():
         "tests/store/sql/view-store_purchasedproductcalculations-0004.sql",
         "tests/musicians/migrations/0005_add_album_count.py",
         "tests/musicians/sql/view-band_info-0003-add_founded_date.sql",
+        "tests/musicians/migrations/0006_add_member_list.py",
+        "tests/musicians/sql/view-band_info-0005.sql",
     )
 
     for path in files_to_delete:
