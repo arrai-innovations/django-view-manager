@@ -1,9 +1,9 @@
 version: 2.1
 orbs:
-    utils: arrai/utils@1.12.0
-    flake8: arrai/flake8@16.0.0
-    pypi: arrai/pypi@2.0.1
-    github: arrai/github@2.0.1
+    utils: arrai/utils@1.18.0
+    flake8: arrai/flake8@20.1.0
+    pypi: arrai/pypi@3.1.0
+    github: arrai/github@4.0.2
 executors:
     python37:
         docker:
@@ -78,14 +78,11 @@ jobs:
                 type: string
                 default: "django_3.2"
         executor: <<parameters.executor>>
+        circleci_ip_ranges: true
         resource_class: small
         steps:
             - checkout
-            - utils/add_ssh_config:
-                host: "docs"
-                hostname: ${DOCS_HOST}
-                port: ${DOCS_PORT}
-                user: ${DOCS_USER}
+            - utils/add_ssh_config
             - when:
                 condition:
                     equal: [ main, << pipeline.git.branch >> ]
