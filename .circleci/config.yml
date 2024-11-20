@@ -356,7 +356,7 @@ workflows:
                         ignore: /.*/
     lint:
         jobs:
-            - flake8/flake8:
+            - flake8/flake8_fixed_ip:
                 name: flake8
                 flake8_cmd: pflake8
                 context: arrai-global
