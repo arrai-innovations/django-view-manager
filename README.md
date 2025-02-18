@@ -66,7 +66,7 @@ Add `django-view-manager.utils` to the INSTALLED_APPS in settings. If possible, 
 ```python
 INSTALLED_APPS = [
     ...
-    "django-view-manager.utils",
+    "django_view_manager.utils",
     ...
 ]
 ```
