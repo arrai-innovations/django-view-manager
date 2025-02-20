@@ -6,3 +6,6 @@
 
 # Django
 django_view_manager_db
+
+# Python
+*.egg-info
