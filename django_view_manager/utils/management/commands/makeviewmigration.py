@@ -198,7 +198,9 @@ class Command(BaseCommand):
 
             if num:
                 migration_num = decimal.Decimal(num)
-                migration_name = line.replace("[X]", "").replace("[ ]", "").strip()
+                migration_name = line.replace("[X]", "").replace("[-]", "").replace("[ ]", "").strip()
+                if "squashed migrations)" in migration_name:
+                    migration_name = migration_name[: migration_name.find(" (")]
 
                 # When looking for the latest, we haven't modified the migration yet, so we can't match by comment.
                 if not only_latest and self._is_migration_modified(db_table_name, migrations_path, migration_name, num):
