@@ -14,11 +14,13 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: BSD License",
     "Environment :: Console",
     "Framework :: Django",
@@ -26,12 +28,12 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "django>=3.2.0",
+    "django>=4.2.0",
 ]
 dynamic = ["version"]
 
 [project.urls]
-repository = "https://github.com/arrai-innovations/django-view-manager/"
+Repository = "https://github.com/arrai-innovations/django-view-manager/"
 
 [tool.setuptools]
 packages = ["django_view_manager", "django_view_manager.utils", "django_view_manager.utils.management", "django_view_manager.utils.management.commands"]
