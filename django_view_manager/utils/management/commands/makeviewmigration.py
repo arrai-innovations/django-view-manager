@@ -11,7 +11,7 @@ from django.db import migrations
 from django.db.transaction import atomic
 
 
-VERSION = "1.0.4"
+VERSION = "1.1.0"
 
 
 COPIED_SQL_VIEW_CONTENT = f"""/*
