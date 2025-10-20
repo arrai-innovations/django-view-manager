@@ -151,7 +151,7 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python 3.9 - django 4.2
+                name: python_3.9-django_4.2
                 context: arrai-global
                 executor: python39
                 django: django_4.2
@@ -161,7 +161,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.10 - django 4.2
+                name: python_3.10-django_4.2
                 context: arrai-global
                 executor: python310
                 django: django_4.2
@@ -171,7 +171,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.10 - django 5.1
+                name: python_3.10-django_5.1
                 context: arrai-global
                 executor: python310
                 django: django_5.1
@@ -181,7 +181,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.10 - django 5.2
+                name: python_3.10-django_5.2
                 context: arrai-global
                 executor: python310
                 django: django_5.2
@@ -191,7 +191,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.11 - django 4.2
+                name: python_3.11-django_4.2
                 context: arrai-global
                 executor: python311
                 django: django_4.2
@@ -201,7 +201,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.11 - django 5.1
+                name: python_3.11-django_5.1
                 context: arrai-global
                 executor: python311
                 django: django_5.1
@@ -211,7 +211,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.11 - django 5.2
+                name: python_3.11-django_5.2
                 context: arrai-global
                 executor: python311
                 django: django_5.2
@@ -221,7 +221,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.12 - django 4.2
+                name: python_3.12-django_4.2
                 context: arrai-global
                 executor: python312
                 django: django_4.2
@@ -231,7 +231,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.12 - django 5.1
+                name: python_3.12-django_5.1
                 context: arrai-global
                 executor: python312
                 django: django_5.1
@@ -241,7 +241,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.12 - django 5.2
+                name: python_3.12-django_5.2
                 context: arrai-global
                 executor: python312
                 django: django_5.2
@@ -251,7 +251,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.13 - django 5.1
+                name: python_3.13-django_5.1
                 context: arrai-global
                 executor: python313
                 django: django_5.1
@@ -261,7 +261,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.13 - django 5.2
+                name: python_3.13-django_5.2
                 context: arrai-global
                 executor: python313
                 django: django_5.2
@@ -271,7 +271,7 @@ workflows:
                     tags:
                         only: /.*/
             - tests:
-                name: python 3.14 - django 5.2
+                name: python_3.14-django_5.2
                 context: arrai-global
                 executor: python314
                 django: django_5.2
@@ -283,19 +283,19 @@ workflows:
             - build:
                 name: build
                 requires:
-                    - python 3.9 - django 4.2
-                    - python 3.10 - django 4.2
-                    - python 3.10 - django 5.1
-                    - python 3.10 - django 5.2
-                    - python 3.11 - django 4.2
-                    - python 3.11 - django 5.1
-                    - python 3.11 - django 5.2
-                    - python 3.12 - django 4.2
-                    - python 3.12 - django 5.1
-                    - python 3.12 - django 5.2
-                    - python 3.13 - django 5.1
-                    - python 3.13 - django 5.2
-                    - python 3.14 - django 5.2
+                    - python_3.9-django_4.2
+                    - python_3.10-django_4.2
+                    - python_3.10-django_5.1
+                    - python_3.10-django_5.2
+                    - python_3.11-django_4.2
+                    - python_3.11-django_5.1
+                    - python_3.11-django_5.2
+                    - python_3.12-django_4.2
+                    - python_3.12-django_5.1
+                    - python_3.12-django_5.2
+                    - python_3.13-django_5.1
+                    - python_3.13-django_5.2
+                    - python_3.14-django_5.2
                 filters:
                     branches:
                         only: /.*/
