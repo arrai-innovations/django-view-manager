@@ -33,7 +33,6 @@ jobs:
                 name: "Install build requirements"
                 command: |
                     pip install --user --upgrade build wheel
-                    pip install --user -r dev_requirements.txt
             - when:
                 condition: << pipeline.git.tag >>
                 steps:
