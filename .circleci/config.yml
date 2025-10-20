@@ -1,9 +1,9 @@
 version: 2.1
 orbs:
-    utils: arrai/utils@1.18.0
-    flake8: arrai/flake8@20.1.0
+    utils: arrai/utils@1.21.1
+    flake8: arrai/flake8@20.2.0
     pypi: arrai/pypi@3.1.0
-    github: arrai/github@4.0.2
+    github: arrai/github@5.0.0
 executors:
     python39:
         docker:
@@ -361,9 +361,9 @@ workflows:
                         only: /.*/
                     tags:
                         only: /.*/
-            - github/create_release:
-                name: release_on_github
-                context: arrai-global
+            - pypi/upload_release:
+                name: publish
+                context: arrai-public-package-publishing
                 requires:
                     - python39_install
                     - python310_install
@@ -376,16 +376,11 @@ workflows:
                         only: /.*/
                     branches:
                         ignore: /.*/
-            - pypi/upload_release:
-                name: publish
-                context: arrai-public-package-publishing
+            - github/create_release:
+                name: release_on_github
+                context: arrai-global
                 requires:
-                    - python39_install
-                    - python310_install
-                    - python311_install
-                    - python312_install
-                    - python313_install
-                    - python314_install
+                    - publish
                 filters:
                     tags:
                         only: /.*/
