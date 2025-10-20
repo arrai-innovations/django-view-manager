@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
     utils: arrai/utils@1.21.1
-    flake8: arrai/flake8@20.2.0
+    lintinator: arrai/lintinator@1.1.0
     pypi: arrai/pypi@3.1.0
     github: arrai/github@5.0.0
 executors:
@@ -388,21 +388,21 @@ workflows:
                         ignore: /.*/
     lint:
         jobs:
-            - flake8/flake8_fixed_ip:
-                name: flake8
-                flake8_cmd: pflake8
-                context: arrai-global
-                wd: ~/project
-                filters:
-                    branches:
-                        only:
-                            - main
-            - flake8/flake8:
-                name: flake8-no-badge
-                flake8_cmd: pflake8
-                create_badges: false
-                wd: ~/project
-                filters:
-                    branches:
-                        ignore:
-                            - main
+            - lintinator/lint_python_fixed_ip:
+                  name: lint
+                  context: arrai-global
+                  executor: lintinator/python312
+                  hooks: ruff
+                  filters:
+                      branches:
+                          only:
+                              - main
+            - lintinator/lint_python:
+                  name: lint-no-badge
+                  executor: lintinator/python312
+                  hooks: ruff
+                  create_badges: false
+                  filters:
+                      branches:
+                          ignore:
+                              - main
