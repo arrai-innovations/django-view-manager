@@ -62,7 +62,6 @@ def replace_files():
     ):
         with open(
             os.path.join("tests", "test_data", filename),
-            "r",
             encoding="utf-8",
         ) as f_in:
             content = f_in.read()

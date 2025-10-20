@@ -22,7 +22,7 @@ class AnimalsTestCase(ManagementCommandTestCase):
                 "Creating initial migration for app 'animals'.",
                 "Migrations for 'animals':",
                 "tests/animals/migrations/0001_initial.py",
-                "" "- Create model Pets" if self.django_version == (4, 2) else "+ Create model Pets",
+                "- Create model Pets" if self.django_version == (4, 2) else "+ Create model Pets",
                 "",
                 "Creating empty migration for the new SQL view.",
                 "Migrations for 'animals':",

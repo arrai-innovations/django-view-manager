@@ -36,7 +36,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "musicians", "migrations", "0003_add_founded_date.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()
@@ -44,7 +43,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "musicians", "migrations", "0005_add_album_count.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()
@@ -79,7 +77,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "musicians", "migrations", "0005_add_album_count.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()
@@ -87,7 +84,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "musicians", "migrations", "0006_add_member_list.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()

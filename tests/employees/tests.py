@@ -8,7 +8,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
     maxDiff = None
 
     def test_no_args(self):
-        out, err = self.call_command(["manage.py", "makeviewmigration"])
+        _out, err = self.call_command(["manage.py", "makeviewmigration"])
         self.assertIn(
             "manage.py makeviewmigration: error: the following arguments are required: db_table_name, migration_name",
             err,
@@ -22,7 +22,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
         )
 
     def test_bad_db_table_name(self):
-        out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeehates", "create_view"])
+        _out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeehates", "create_view"])
         if self.python_version >= (3, 12):
             self.assertIn(
                 "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
@@ -65,14 +65,14 @@ class EmployeesTestCase(ManagementCommandTestCase):
         self.assertTrue(os.path.exists("tests/employees/migrations/0003_create_view.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
 
-        with open("VERSION", "r") as f:
+        with open("VERSION") as f:
             version = f.read().strip()
 
-        with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "r") as f:
+        with open("tests/employees/sql/view-employees_employeelikes-latest.sql") as f:
             content = f.read()
         self.assertEqual(
             content,
-            """/*
+            f"""/*
     This file was generated using django-view-manager {version}.
     Add the SQL for this view and then commit the changes.
     You can remove this comment before committing.
@@ -93,9 +93,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
         314 AS employee_id,
         'Puppies' AS name
 */
-""".format(
-                version=version
-            ),
+""",
         )
 
         # Test creating a second view.  The contents from the first should be copied to the new view file.
@@ -132,12 +130,12 @@ class EmployeesTestCase(ManagementCommandTestCase):
         self.assertTrue(os.path.exists("tests/employees/migrations/0004_add_date_to_employee_likes.py"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0003.sql"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
-        with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "r") as f:
+        with open("tests/employees/sql/view-employees_employeelikes-latest.sql") as f:
             content = f.read()
 
         self.assertEqual(
             content,
-            """/*
+            f"""/*
     This file was generated using django-view-manager {version}.
     Modify the SQL for this view and then commit the changes.
     You can remove this comment before committing.
@@ -146,16 +144,13 @@ class EmployeesTestCase(ManagementCommandTestCase):
     before altering the sql, so the historical sql file is created with the correct contents.
 */
 SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name UNION 2 AS id, 314 AS employee_id, 'Puppies' AS name;
-""".format(
-                version=version
-            ),
+""",
         )
 
         # Test creating a third view.  The contents from the first should be copied to the new view file.
         with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "w") as f:
             f.write(
-                (
-                    """/*
+                f"""/*
     This file was generated using django-view-manager {version}.
     Modify the SQL for this view and then commit the changes.
     You can remove this comment before committing.
@@ -164,8 +159,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name UNION 2 AS id, 314 AS emplo
     before altering the sql, so the historical sql file is created with the correct contents.
 */
 SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
-                    "UNION 2 AS id, 314 AS employee_id, 'Puppies' AS name, now() as when;\n"
-                ).format(version=version)
+                "UNION 2 AS id, 314 AS employee_id, 'Puppies' AS name, now() as when;\n"
             )
 
         # Remove the generated line from the 'latest' migration, so we run the code to add it back in.
@@ -215,7 +209,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0003.sql"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-0004.sql"))
         self.assertTrue(os.path.exists("tests/employees/sql/view-employees_employeelikes-latest.sql"))
-        with open("tests/employees/sql/view-employees_employeelikes-latest.sql", "r") as f:
+        with open("tests/employees/sql/view-employees_employeelikes-latest.sql") as f:
             content = f.read()
 
         sql = (  # Added here, so we don't go over 120 characters on a line.
@@ -225,7 +219,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
 
         self.assertEqual(
             content,
-            """/*
+            f"""/*
     This file was generated using django-view-manager {version}.
     Modify the SQL for this view and then commit the changes.
     You can remove this comment before committing.
@@ -234,7 +228,5 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
     before altering the sql, so the historical sql file is created with the correct contents.
 */
 {sql}
-""".format(
-                version=version, sql=sql
-            ),
+""",
         )

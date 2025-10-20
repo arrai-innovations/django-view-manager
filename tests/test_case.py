@@ -22,7 +22,7 @@ class ManagementCommandTestCase(TransactionTestCase):
         # Clean up sys.modules between tests, because some tests delete migrations or the migration folder.
         keys_to_delete = set()
         keys_to_find = ("tests.animals", "tests.employees", "tests.food", "tests.store")
-        for key in sys.modules.keys():
+        for key in sys.modules:
             for key_to_find in keys_to_find:
                 if key_to_find in key:
                     keys_to_delete.add(key)
@@ -34,11 +34,8 @@ class ManagementCommandTestCase(TransactionTestCase):
         self.stderr = err = io.StringIO()
         self.stdout = out = io.StringIO()
 
-        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-            try:
-                execute_from_command_line(command)
-            except SystemExit:
-                pass
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err), contextlib.suppress(SystemExit):
+            execute_from_command_line(command)
 
         err.seek(0)
         out.seek(0)

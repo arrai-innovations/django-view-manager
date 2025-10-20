@@ -8,10 +8,10 @@ sql_path = "tests/musicians/sql"
 forward_sql_filename = "view-band_info-latest.sql"
 reverse_sql_filename = "view-band_info-0003.sql"
 
-with open(os.path.join(sql_path, forward_sql_filename), mode="r") as f:
+with open(os.path.join(sql_path, forward_sql_filename)) as f:
     forwards_sql = f.read()
 
-with open(os.path.join(sql_path, reverse_sql_filename), mode="r") as f:
+with open(os.path.join(sql_path, reverse_sql_filename)) as f:
     reverse_sql = f.read()
 
 
