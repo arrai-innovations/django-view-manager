@@ -5,9 +5,6 @@ orbs:
     pypi: arrai/pypi@3.1.0
     github: arrai/github@4.0.2
 executors:
-    python38:
-        docker:
-            - image: cimg/python:3.8
     python39:
         docker:
             - image: cimg/python:3.9
@@ -154,16 +151,6 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python 3.8 - django 4.2
-                context: arrai-global
-                executor: python38
-                django: django_4.2
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
                 name: python 3.9 - django 4.2
                 context: arrai-global
                 executor: python39
@@ -296,7 +283,6 @@ workflows:
             - build:
                 name: build
                 requires:
-                    - python 3.8 - django 4.2
                     - python 3.9 - django 4.2
                     - python 3.10 - django 4.2
                     - python 3.10 - django 5.1
@@ -310,16 +296,6 @@ workflows:
                     - python 3.13 - django 5.1
                     - python 3.13 - django 5.2
                     - python 3.14 - django 5.2
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python38_install
-                executor: python38
-                requires:
-                    - build
                 filters:
                     branches:
                         only: /.*/
@@ -389,7 +365,6 @@ workflows:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
@@ -405,7 +380,6 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 requires:
-                    - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
