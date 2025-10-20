@@ -19,7 +19,7 @@ class StoreTestCase(ManagementCommandTestCase):
                 "Creating empty migration for the SQL changes.",
                 "Migrations for 'store':",
                 "tests/store/migrations/0005_modify_view.py",
-                "s Raw SQL operation",
+                "- Raw SQL operation" if self.django_version == (4, 2) else "s Raw SQL operation",
                 "",
                 "Created historical SQL view file - 'view-store_purchasedproductcalculations-0004.sql'.",
                 "",

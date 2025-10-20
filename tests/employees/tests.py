@@ -23,12 +23,20 @@ class EmployeesTestCase(ManagementCommandTestCase):
 
     def test_bad_db_table_name(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeehates", "create_view"])
-        self.assertIn(
-            "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
-            "employeehates' (choose from 'animals_pets', 'band_info', 'employees_employeelikes', 'food_sweets', "
-            "'store_productcalculations', 'store_purchasedproductcalculations')",
-            err,
-        )
+        if self.python_version >= (3, 12):
+            self.assertIn(
+                "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
+                "employeehates' (choose from animals_pets, band_info, employees_employeelikes, food_sweets, "
+                "store_productcalculations, store_purchasedproductcalculations)",
+                err,
+            )
+        else:  # python 3.9, 3.10, 3.11
+            self.assertIn(
+                "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
+                "employeehates' (choose from 'animals_pets', 'band_info', 'employees_employeelikes', 'food_sweets', "
+                "'store_productcalculations', 'store_purchasedproductcalculations')",
+                err,
+            )
 
     def test_no_sql_folder(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeelikes", "create_view"])
@@ -42,7 +50,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
                 "Creating empty migration for the new SQL view.",
                 "Migrations for 'employees':",
                 "tests/employees/migrations/0003_create_view.py",
-                "s Raw SQL operation",
+                "- Raw SQL operation" if self.django_version == (4, 2) else "s Raw SQL operation",
                 "",
                 "Created new SQL view file - 'view-employees_employeelikes-latest.sql'.",
                 "",
@@ -108,7 +116,7 @@ class EmployeesTestCase(ManagementCommandTestCase):
                 "Creating empty migration for the SQL changes.",
                 "Migrations for 'employees':",
                 "tests/employees/migrations/0004_add_date_to_employee_likes.py",
-                "s Raw SQL operation",
+                "- Raw SQL operation" if self.django_version == (4, 2) else "s Raw SQL operation",
                 "",
                 "Created historical SQL view file - 'view-employees_employeelikes-0003.sql'.",
                 "",
@@ -189,7 +197,7 @@ SELECT 1 AS id, 42 AS employee_id, 'Kittens' AS name, now() as when """
                 "Creating empty migration for the SQL changes.",
                 "Migrations for 'employees':",
                 "tests/employees/migrations/0005_add_rating_to_employee_likes.py",
-                "s Raw SQL operation",
+                "- Raw SQL operation" if self.django_version == (4, 2) else "s Raw SQL operation",
                 "",
                 "Created historical SQL view file - 'view-employees_employeelikes-0004.sql'.",
                 "",
