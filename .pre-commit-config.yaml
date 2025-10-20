@@ -25,30 +25,13 @@ repos:
           - id: circleci-config-validate
             files: ^.circleci/config.yml$
 
-    - repo: https://github.com/psf/black
-      rev: 25.9.0
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      # sync with ruff in pyproject.toml
+      rev: v0.14.1
       hooks:
-          - id: black
-
-    - repo: https://github.com/csachs/pyproject-flake8
-      rev: v7.0.0
-      hooks:
-          - id: pyproject-flake8
-            additional_dependencies:
-                [
-                    "black==25.9.0",
-                    "flake8-assertive==2.2.0",
-                    "flake8-black==0.4.0",
-                    "flake8-bugbear==24.12.12",
-                    "flake8-builtins==3.0.0",
-                    "flake8-comprehensions==3.17.0",
-                    "flake8-debugger==4.1.2",
-                    "flake8-import-order==0.18.2",
-                    "flake8-logging-format==2024.24.12",
-                    "flake8-pep3101==2.1.0",
-                    "pep8-naming==0.15.1",
-                    "pylint-django==2.6.1",
-                ]
+          - id: ruff
+            args: [--fix]
+          - id: ruff-format
 
     - repo: https://github.com/frnmst/md-toc
       rev: 9.0.0
