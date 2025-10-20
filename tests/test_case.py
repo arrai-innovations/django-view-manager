@@ -7,10 +7,15 @@ from unittest import mock
 from django.core.management import call_command
 from django.core.management import execute_from_command_line
 from django.test import TransactionTestCase
+from django.utils.version import get_main_version
+from django.utils.version import get_version_tuple
 
 
 # Tests cannot be run in parallel.
 class ManagementCommandTestCase(TransactionTestCase):
+    django_version = get_version_tuple(get_main_version())[:2]
+    python_version = (sys.version_info.major, sys.version_info.minor)
+
     def tearDown(self):
         super().tearDown()
 

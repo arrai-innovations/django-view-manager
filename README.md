@@ -10,27 +10,31 @@ Refer to folder and file structure, and usage, for more detailed information.
 
 ![Flake8](https://docs.arrai.dev/django-view-manager/artifacts/main/flake8.svg)
 
-![Python 3.7 - Django 3.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.7%20-%20django%203.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.7%20-%20django%203.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.7%20-%20django%203.2/)
+![Python 3.9 - Django 4.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.9%20-%20django%204.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%203.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.8%20-%20django%203.2/)
+![Python 3.10 - Django 4.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%204.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%204.0.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%204.0.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.8%20-%20django%204.0/)
+![Python 3.10 - Django 5.1](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%205.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%205.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%205.1/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%204.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.8%20-%20django%204.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.8%20-%20django%204.1/)
+![Python 3.10 - Django 5.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%205.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%205.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%205.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%203.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%203.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.9%20-%20django%203.2/)
+![Python 3.11 - Django 4.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%204.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%204.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.11%20-%20django%204.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.0.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.0.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.9%20-%20django%204.0/)
+![Python 3.11 - Django 5.1](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%205.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%205.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.11%20-%20django%205.1/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.9%20-%20django%204.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.9%20-%20django%204.1/)
+![Python 3.11 - Django 5.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%205.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%205.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.11%20-%20django%205.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%203.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%203.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%203.2/)
+![Python 3.12 - Django 4.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%204.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%204.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.12%20-%20django%204.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.0.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.0.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%204.0/)
+![Python 3.12 - Django 5.1](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%205.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%205.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.12%20-%20django%205.1/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.10%20-%20django%204.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.10%20-%20django%204.1/)
+![Python 3.12 - Django 5.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%205.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.12%20-%20django%205.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.12%20-%20django%205.2/)
 
-![Python%203.7%20-%20Django%203.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%204.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.11%20-%20django%204.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.11%20-%20django%204.1/)
+![Python 3.13 - Django 5.1](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.13%20-%20django%205.1.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.13%20-%20django%205.1.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.13%20-%20django%205.1/)
+
+![Python 3.13 - Django 5.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.13%20-%20django%205.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.13%20-%20django%205.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.13%20-%20django%205.2/)
+
+![Python 3.14 - Django 5.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.14%20-%20django%205.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python%203.14%20-%20django%205.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python%203.14%20-%20django%205.2/)
 
 **Table of Contents**
 
@@ -135,14 +139,14 @@ Created 'migrations' folder in app 'employees'.
 Creating initial migration for app 'employees'.
 Migrations for 'employees':
   project_name/employees/migrations/0001_initial.py
-    - Create model Sweets
+    + Create model Sweets
 ‧
 Created 'sql' folder in app 'employees'.
 ‧
 Creating empty migration for the new SQL view.
 Migrations for 'employees':
   project_name/employees/migrations/0002_create_view.py
-    - Raw SQL operation
+    s Raw SQL operation
 ‧
 Created new SQL view file - 'view-employees_employeelikes-latest.sql'.
 ‧
@@ -191,7 +195,7 @@ The results will be:
 Creating empty migration for the SQL changes.
 Migrations for 'employees':
   tests/employees/migrations/0003_add_date_to_employee_likes.py
-    - Raw SQL operation
+    s Raw SQL operation
 ‧
 Created historical SQL view file - 'view-employees_employeelikes-0002.sql'.
 ‧
