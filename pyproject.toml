@@ -36,7 +36,6 @@ Repository = "https://github.com/arrai-innovations/django-view-manager/"
 
 [tool.setuptools]
 packages = ["django_view_manager", "django_view_manager.utils", "django_view_manager.utils.management", "django_view_manager.utils.management.commands"]
-license-files = ['LICENSE']
 
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}
