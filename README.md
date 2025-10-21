@@ -8,7 +8,7 @@ The management command creates an `sql` folder inside an app, along with files l
 
 Refer to folder and file structure, and usage, for more detailed information.
 
-![Flake8](https://docs.arrai.dev/django-view-manager/artifacts/main/flake8.svg)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=for-the-badge)](https://docs.astral.sh/ruff/formatter/#style-guide)
 
 ![Python_3.9-Django_4.2](https://docs.arrai.dev/django-view-manager/artifacts/main/python_3.9-django_4.2.svg) [![Coverage](https://docs.arrai.dev/django-view-manager/artifacts/main/python_3.9-django_4.2.coverage.svg)](https://docs.arrai.dev/django-view-manager/artifacts/main/htmlcov_python_3.9-django_4.2/)
 
