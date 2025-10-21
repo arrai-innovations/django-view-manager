@@ -9,13 +9,13 @@ forward_sql_filename = "view-store_productcalculations-latest.sql"
 reverse_sql_filename = "view-store_productcalculations-0002.sql"
 sql_filename_which_uses_this_view = "view-store_purchasedproductcalculations-latest.sql"
 
-with open(os.path.join(sql_path, forward_sql_filename), mode="r") as f:
+with open(os.path.join(sql_path, forward_sql_filename)) as f:
     forwards_sql = f.read()
 
-with open(os.path.join(sql_path, reverse_sql_filename), mode="r") as f:
+with open(os.path.join(sql_path, reverse_sql_filename)) as f:
     reverse_sql = f.read()
 
-with open(os.path.join(sql_path, sql_filename_which_uses_this_view), mode="r") as f:
+with open(os.path.join(sql_path, sql_filename_which_uses_this_view)) as f:
     sql_which_uses_this_view = f.read()
 
 

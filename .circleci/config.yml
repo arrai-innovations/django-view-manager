@@ -1,9 +1,9 @@
 version: 2.1
 orbs:
-    utils: arrai/utils@1.18.0
-    flake8: arrai/flake8@20.1.0
+    utils: arrai/utils@1.21.1
+    ruff: arrai/ruff@1.1.1
     pypi: arrai/pypi@3.1.0
-    github: arrai/github@4.0.2
+    github: arrai/github@5.0.0
 executors:
     python39:
         docker:
@@ -33,7 +33,6 @@ jobs:
                 name: "Install build requirements"
                 command: |
                     pip install --user --upgrade build wheel
-                    pip install --user -r dev_requirements.txt
             - when:
                 condition: << pipeline.git.tag >>
                 steps:
@@ -361,23 +360,9 @@ workflows:
                         only: /.*/
                     tags:
                         only: /.*/
-            - github/create_release:
-                name: release_on_github
-                context: arrai-global
-                requires:
-                    - python39_install
-                    - python310_install
-                    - python311_install
-                    - python312_install
-                    - python313_install
-                    - python314_install
-                filters:
-                    tags:
-                        only: /.*/
-                    branches:
-                        ignore: /.*/
             - pypi/upload_release:
                 name: publish
+                cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
                 context: arrai-public-package-publishing
                 requires:
                     - python39_install
@@ -391,23 +376,31 @@ workflows:
                         only: /.*/
                     branches:
                         ignore: /.*/
+            - github/create_release:
+                name: release_on_github
+                context: arrai-global
+                requires:
+                    - publish
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
     lint:
         jobs:
-            - flake8/flake8_fixed_ip:
-                name: flake8
-                flake8_cmd: pflake8
-                context: arrai-global
-                wd: ~/project
-                filters:
-                    branches:
-                        only:
-                            - main
-            - flake8/flake8:
-                name: flake8-no-badge
-                flake8_cmd: pflake8
-                create_badges: false
-                wd: ~/project
-                filters:
-                    branches:
-                        ignore:
-                            - main
+            - ruff/ruff_fixed_ip:
+                  name: ruff
+                  context: arrai-global
+                  executor: python312
+                  filters:
+                      branches:
+                          only:
+                              - main
+            - ruff/ruff:
+                  name: ruff-no-badge
+                  executor: python312
+                  create_badges: false
+                  filters:
+                      branches:
+                          ignore:
+                              - main

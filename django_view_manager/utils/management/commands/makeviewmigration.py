@@ -55,7 +55,7 @@ MIGRATION_MODIFIED_COMMENT = f"# Modified using django-view-manager {VERSION}.  
 
 
 class Command(BaseCommand):
-    help = (  # noqa: A003
+    help = (
         "In the appropriate app, two files will get created. "
         "`sql/view-view_name-0000.sql` - contains the SQL for the view. "
         "`migrations/0000_view_name.py` - a migration that reads the appropriate files in the sql folder. "
@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def _is_migration_modified(db_table_name, migrations_path, migration_name, num):
-        with open(os.path.join(migrations_path, f"{migration_name}.py"), "r", encoding="utf-8") as f:
+        with open(os.path.join(migrations_path, f"{migration_name}.py"), encoding="utf-8") as f:
             # Did we modify this migration?  Check the first 10 lines for our modified comment.
             found_modified_comment = False
             for migration_line_no, migration_line in enumerate(f.readlines()):
@@ -185,13 +185,13 @@ class Command(BaseCommand):
         show_migration_results = self._call_command("showmigrations", app_label)
         if not show_migration_results:  # Erred.  The reason will be printed to the console via the command.
             if only_latest:
-                return None, None
+                return None
             return None
 
         # Parse the migration numbers that `showmigrations` returns
         # and get the migration numbers, or new migration number.
         migration_numbers_and_names = {}
-        migration_num = migration_name = None
+        migration_name = None
 
         for line in show_migration_results:
             num = self._parse_migration_number_from_show_migrations(line)
@@ -208,7 +208,7 @@ class Command(BaseCommand):
 
         if only_latest:
             # If for some reason we can't find the latest migration.
-            return migration_num, migration_name
+            return migration_name
 
         return migration_numbers_and_names
 
@@ -381,18 +381,14 @@ class Command(BaseCommand):
                 '''"SELECT 'replace_forwards';"''', "forwards_sql"
             )
             lines[class_line_no - 1 : class_line_no] = [
-                f'sql_path = "{os.path.relpath(sql_path)}"\n',
+                f'\nsql_path = "{os.path.relpath(sql_path)}"\n',
                 f'forward_sql_filename = "{forward_sql_filename}"\n',
                 f'reverse_sql_filename = "{reverse_sql_filename}"\n' if reverse_sql_filename else "",
                 "\n",
-                'with open(os.path.join(sql_path, forward_sql_filename), mode="r") as f:\n',
+                "with open(os.path.join(sql_path, forward_sql_filename)) as f:\n",
                 "    forwards_sql = f.read()\n",
                 "\n",
-                (
-                    'with open(os.path.join(sql_path, reverse_sql_filename), mode="r") as f:\n'
-                    if reverse_sql_filename
-                    else ""
-                ),
+                "with open(os.path.join(sql_path, reverse_sql_filename)) as f:\n" if reverse_sql_filename else "",
                 "    reverse_sql = f.read()\n" if reverse_sql_filename else "",
                 "\n" if reverse_sql_filename else "",
             ]
@@ -463,7 +459,7 @@ class Command(BaseCommand):
             return
 
         # Get the new migration number and name.
-        new_migration_num, new_migration_name = self._get_migration_numbers_and_names(
+        new_migration_name = self._get_migration_numbers_and_names(
             db_table_name, app_label, migrations_path, only_latest=True
         )
 

@@ -6,22 +6,10 @@ name = "pypi"
 [packages]
 
 [dev-packages]
-black = "==25.9.0"
 coverage = {version = ">=7.11.0,<8.0.0", extras = ["toml"]}
 coverage-badge = ">=1.1.2,<2.0.0"
 django = "==5.2.7"
-flake8-assertive = "==2.2.0"
-flake8-black = "==0.4.0"
-flake8-bugbear = "==24.12.12"
-flake8-builtins = "==3.0.0"
-flake8-comprehensions = "==3.17.0"
-flake8-debugger = "==4.1.2"
-flake8-import-order = "==0.18.2"
-flake8-logging-format = "==2024.24.12"
-flake8-pep3101 = "==2.1.0"
-pep8-naming = "==0.15.1"
-pylint-django = "==2.6.1"
-pyproject-flake8 = "==7.0.0"
+ruff = "==0.14.1"
 
 [requires]
 python_version = "3.12"

@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "django-view-manager"
 description = "A management command for django that provides diffs of sql views."
 readme = "README.md"
-requires-python = ">=3.7"
-license = { file = "LICENSE" }
+requires-python = ">=3.9"
+license-files = ['LICENSE']
 authors = [
     { name = "Arrai Innovations", email = "support@arrai.com" }
 ]
@@ -36,26 +36,90 @@ Repository = "https://github.com/arrai-innovations/django-view-manager/"
 
 [tool.setuptools]
 packages = ["django_view_manager", "django_view_manager.utils", "django_view_manager.utils.management", "django_view_manager.utils.management.commands"]
-license-files = ['LICENSE']
 
 [tool.setuptools.dynamic]
 version = {file = "VERSION"}
 
-[tool.flake8]
-exclude = ".git"
-extend-ignore = [
-    # (flake8) Black incompatibility - see https://github.com/PyCQA/pycodestyle/issues/373
-    "E203",
+[tool.ruff]
+line-length = 120
+target-version = 'py39'
+exclude = [
+    # entries from .gitignore are excluded by default
+    '.circleci',
+    '.git',
 ]
+
+[tool.ruff.format]
+line-ending = 'lf'
+
+[tool.ruff.lint]
+select = [
+    # flake8-builtins: https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    'A',
+    # flake8-bugbear: https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    'B0',
+    # flake8-comprehensions: https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    'C4',
+    # mccabe: https://docs.astral.sh/ruff/rules/#mccabe-c90
+    'C90',
+    # flake8-django: https://docs.astral.sh/ruff/rules/#flake8-django-dj
+    'DJ',
+    # pycodestyle: https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+    'E',
+    'W',
+    # pyflakes: https://docs.astral.sh/ruff/rules/#pyflakes-f
+    'F',
+    # flake8-fixme: https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+    'FIX',
+    # flake8-logging-format: https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+    'G',
+    # isort: https://docs.astral.sh/ruff/rules/#isort-i
+    'I',
+    # flake8-no-pep420 https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+    'INP',
+    # flake8-implicit-string-concat: https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+    'ISC',
+    # pep8-naming: https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    'N',
+    # pylint: https://docs.astral.sh/ruff/rules/#pylint-pl
+    'PLC',
+    'PLE',
+    # flake8-quotes: https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+    'Q',
+    # ruff: https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    'RUF',
+    # flake8-bandit: https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+    'S',
+    # flake8-simplify: https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    'SIM',
+    # flake8-debugger: https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+    'T10',
+    # flake8-print: https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    'T20',
+    # flake8-tidy-imports: https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
+    'TID',
+    # pyupgrade: https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    'UP',
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+'*/migrations/*' = [
+    'I001',
+    'RUF012',
+]
+'*/test_data/*' = [
+    'INP001',
+]
+
+[tool.ruff.lint.mccabe]
 max-complexity = 10
-max-line-length = 120
-# flake8-import-order
-application-import-names = [
-    'config',
-    'django_view_manager'
-]
-import-order-style = 'pycharm'
-# pep8-naming
+
+[tool.ruff.lint.isort]
+force-single-line = true
+lines-after-imports = 2
+
+[tool.ruff.lint.pep8-naming]
 ignore-names = [
     # defaults
     'setUp',
@@ -69,13 +133,6 @@ ignore-names = [
     # custom
 ]
 
-[tool.pycodestyle]
-max-line-length = 120
-exclude = ".git"
-
-[tool.black]
-line-length = 120
-
 [tool.coverage.run]
 branch = true
 omit = [
@@ -87,12 +144,3 @@ omit = [
 exclude_lines = [
     "pragma: no cover",
 ]
-
-[tool.pylint.master]
-load-plugins = ['pylint_django']
-
-[tool.pylint.format]
-max-line-length = 120
-
-[tool.pylint.messages_control]
-disable = ['missing-docstring', 'invalid-name']

@@ -41,7 +41,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "store", "migrations", "0003_create_purchased_product_calculations.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()
@@ -49,7 +48,6 @@ class StoreTestCase(ManagementCommandTestCase):
 
         with open(
             os.path.join("tests", "store", "migrations", "0004_add_markup_amount_to_product_calculations.py"),
-            "r",
             encoding="utf-8",
         ) as f:
             lines = f.readlines()
