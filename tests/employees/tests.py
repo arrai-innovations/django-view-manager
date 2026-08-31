@@ -23,20 +23,20 @@ class EmployeesTestCase(ManagementCommandTestCase):
 
     def test_bad_db_table_name(self):
         _out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeehates", "create_view"])
-        if self.python_version >= (3, 12):
-            self.assertIn(
-                "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
-                "employeehates' (choose from animals_pets, band_info, employees_employeelikes, food_sweets, "
-                "store_productcalculations, store_purchasedproductcalculations)",
-                err,
-            )
-        else:  # python 3.9, 3.10, 3.11
-            self.assertIn(
-                "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_"
-                "employeehates' (choose from 'animals_pets', 'band_info', 'employees_employeelikes', 'food_sweets', "
-                "'store_productcalculations', 'store_purchasedproductcalculations')",
-                err,
-            )
+        err_text = " ".join(err)
+        self.assertIn(
+            "manage.py makeviewmigration: error: argument db_table_name: invalid choice: 'employees_employeehates'",
+            err_text,
+        )
+        for choice in (
+            "animals_pets",
+            "band_info",
+            "employees_employeelikes",
+            "food_sweets",
+            "store_productcalculations",
+            "store_purchasedproductcalculations",
+        ):
+            self.assertIn(choice, err_text)
 
     def test_no_sql_folder(self):
         out, err = self.call_command(["manage.py", "makeviewmigration", "employees_employeelikes", "create_view"])
